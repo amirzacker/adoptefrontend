@@ -2,9 +2,11 @@ import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Header />
-      Home
+      <div className="p-3">
+        Home
+      </div>
     </div>
   );
 }
