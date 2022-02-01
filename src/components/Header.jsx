@@ -1,21 +1,8 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
+import propTypes from 'prop-types';
 import logo from '../logo.svg'
 
 function Header(props) {
-  const [user, setUser] = useState()
-
-  const setUserEva = useCallback(() => {
-    if (user !== 'Eva') {
-      setUser('Eva')
-    }
-  }, [user])
-
-  const setUserAude = useCallback(() => setUser('Aude'), [])
-
-  let login = user
-    ? <div>Bienvenue  {user}</div>
-    : <div>Connectez-vous ! <button onClick={() => setUser('Stéphane')}>Connexion</button></div>
-
   return (
     <div>
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -32,15 +19,19 @@ function Header(props) {
               <div className="nav-link">Lien 2</div>
             </li>
           </ul>
-          <div className="navbar-text">{login}</div>
+          <div className="navbar-text">
+            {props.user
+              ? <div>Bienvenue  {props.user}</div>
+              : <div>Connectez-vous !</div>}
+          </div>
         </div>
       </nav>
-      <div>
-        <button onClick={setUserEva}>Eva</button>
-        <button onClick={setUserAude}>Aude</button>
-      </div>
     </div>
   );
+}
+
+Header.propTypes = {
+  user: propTypes.string
 }
 
 export default Header;
