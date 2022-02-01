@@ -1,11 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import logo from '../logo.svg'
 
 function Header(props) {
   const [user, setUser] = useState()
+
   useEffect(() => {
     setTimeout(() => setUser('Stéphane'), 1000)
   }, [])
+
+  const setUserEva = useCallback(() => {
+    if (user !== 'Eva') {
+      setUser('Eva')
+    }
+  }, [user])
+
+  const setUserAude = useCallback(() => setUser('Aude'), [])
+
   return (
     <div>
       <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -28,8 +38,8 @@ function Header(props) {
         </div>
       </nav>
       <div>
-        <button onClick={() => setUser('Eva')}>Eva</button>
-        <button onClick={() => setUser('Aude')}>Aude</button>
+        <button onClick={setUserEva}>Eva</button>
+        <button onClick={setUserAude}>Aude</button>
       </div>
     </div>
   );
