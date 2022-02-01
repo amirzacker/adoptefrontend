@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import logo from '../logo.svg'
 
 function Header(props) {
   const [user, setUser] = useState()
-
-  useEffect(() => {
-    setTimeout(() => setUser('Stéphane'), 1000)
-  }, [])
 
   const setUserEva = useCallback(() => {
     if (user !== 'Eva') {
@@ -15,6 +11,10 @@ function Header(props) {
   }, [user])
 
   const setUserAude = useCallback(() => setUser('Aude'), [])
+
+  let login = user
+    ? <div>Bienvenue  {user}</div>
+    : <div>Connectez-vous ! <button onClick={() => setUser('Stéphane')}>Connexion</button></div>
 
   return (
     <div>
@@ -32,9 +32,7 @@ function Header(props) {
               <div className="nav-link">Lien 2</div>
             </li>
           </ul>
-          <div className="navbar-text">
-            Bienvenue {user} !
-          </div>
+          <div className="navbar-text">{login}</div>
         </div>
       </nav>
       <div>
