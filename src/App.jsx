@@ -4,6 +4,7 @@ import Counter from "./pages/Counter";
 import Header from "./components/Header";
 import SimLogin from "./pages/SimLogin";
 import UserList from "./pages/UserList";
+import UserProfile from "./components/UserProfile";
 
 function App() {
   const [user, setUser] = useState('')

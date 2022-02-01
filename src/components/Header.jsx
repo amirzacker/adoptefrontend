@@ -6,7 +6,7 @@ import logo from '../logo.svg'
 function Header(props) {
   return (
     <div>
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
+      <nav className="navbar navbar-dark bg-dark navbar-expand-md">
         <div className="container-fluid">
           <div className="navbar-brand">
             <img src={logo} alt="" width="30" height="24" className="d-inline-block align-text-top mt-1" />
