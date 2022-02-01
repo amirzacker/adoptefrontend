@@ -1,5 +1,6 @@
 import { useState } from "react";
-import Counter from "./components/Counter";
+import { Route, Routes } from "react-router-dom";
+import Counter from "./pages/Counter";
 import Header from "./components/Header";
 import SimLogin from "./pages/SimLogin";
 import UserList from "./pages/UserList";
@@ -9,11 +10,12 @@ function App() {
   return (
     <div>
       <Header user={user} />
-      <SimLogin setUser={setUser} />
       <div className="p-3">
-        Home
-        <UserList />
-        <Counter />
+        <Routes>
+          <Route path="/" element={<UserList />} />
+          <Route path="/counter" element={<Counter />} />
+          <Route path="/login" element={<SimLogin setUser={setUser} />} />
+        </Routes>
       </div>
     </div>
   );

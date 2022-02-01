@@ -5,7 +5,8 @@ function Counter(props) {
 
   const [historique, setHistorique] = useState([])
   const histoCounter = useCallback((value) => {
-    setHistorique([...historique, counter])
+    historique.push(counter)
+    setHistorique(historique)
     setCounter(value)
   }, [historique, counter])
 

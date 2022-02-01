@@ -1,5 +1,6 @@
 import React from 'react';
 import propTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import logo from '../logo.svg'
 
 function Header(props) {
@@ -13,16 +14,16 @@ function Header(props) {
           </div>
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <div className="nav-link">Lien 1</div>
+              <Link className="nav-link" to="/">Users</Link>
             </li>
             <li className="nav-item">
-              <div className="nav-link">Lien 2</div>
+              <Link className="nav-link" to="/counter">Counter</Link>
             </li>
           </ul>
           <div className="navbar-text">
             {props.user
               ? <div>Bienvenue  {props.user}</div>
-              : <div>Connectez-vous !</div>}
+              : <Link to="/login">Connectez-vous !</Link>}
           </div>
         </div>
       </nav>
