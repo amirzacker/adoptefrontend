@@ -19,6 +19,9 @@ function Header(props) {
             <li className="nav-item">
               <Link className="nav-link" to="/counter">Counter</Link>
             </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/roles">Rôles</Link>
+            </li>
           </ul>
           <div className="navbar-text">
             {props.user

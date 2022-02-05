@@ -4,7 +4,7 @@ import Counter from "./pages/Counter";
 import Header from "./components/Header";
 import SimLogin from "./pages/SimLogin";
 import UserList from "./pages/UserList";
-import UserProfile from "./components/UserProfile";
+import Roles from "./pages/Roles";
 
 function App() {
   const [user, setUser] = useState('')
@@ -14,6 +14,7 @@ function App() {
       <div className="p-3">
         <Routes>
           <Route path="/" element={<UserList />} />
+          <Route path="/roles" element={<Roles />} />
           <Route path="/counter" element={<Counter />} />
           <Route path="/login" element={<SimLogin setUser={setUser} />} />
         </Routes>
