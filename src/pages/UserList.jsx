@@ -24,6 +24,11 @@ function UserList() {
     setFilteredUsers(users.filter(user => user.name.toLowerCase().includes(searchCriteria.toLowerCase())))
   }, [searchCriteria, users])
 
+  const deleteUser = useCallback((userId) => {
+    axios.delete('https://jsonplaceholder.typicode.com/users/' + userId)
+    setUsers(users.filter(user => user.id !== userId))
+  }, [users])
+
   return (
     <div>
       <h1>Liste des utilisateurs</h1>
@@ -32,8 +37,8 @@ function UserList() {
         <div className="row">
           {
             filteredUsers.map((user, i) =>
-              <div className="col-xs-6 col-sm-4 col-md-3 mb-3" key={i}>
-                <UserProfile user={user} />
+              <div className="col-6 col-sm-4 col-md-3 mb-3" key={i}>
+                <UserProfile user={user} deleteUser={deleteUser} />
               </div>
             )}
           <div className="d-flex col-3 mb-3 justify-content-center align-items-center" >
