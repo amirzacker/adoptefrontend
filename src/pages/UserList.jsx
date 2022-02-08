@@ -1,16 +1,28 @@
+import axios from 'axios';
 import { useCallback, useState, useEffect } from 'react';
 import UserProfile from '../components/UserProfile';
-
-const users = ['Eva', 'Aude', 'Anne', 'Marc', 'Sansom']
 
 function UserList() {
   const [searchCriteria, setSearchCriteria] = useState('')
   const handleSearch = useCallback(event => setSearchCriteria(event.target.value), [])
 
+  const [users, setUsers] = useState([])
+  useEffect(() => {
+    // Fetch version
+    // fetch('https://jsonplaceholder.typicode.com/users')
+    //   .then(res => res.json())
+    //   .then(result => setUsers(result))
+
+    // Axios version
+    axios
+      .get('https://jsonplaceholder.typicode.com/users')
+      .then(result => setUsers(result.data))
+  }, [])
+
   const [filteredUsers, setFilteredUsers] = useState([])
   useEffect(() => {
-    setFilteredUsers(users.filter(user => user.toLowerCase().includes(searchCriteria.toLowerCase())))
-  }, [searchCriteria])
+    setFilteredUsers(users.filter(user => user.name.toLowerCase().includes(searchCriteria.toLowerCase())))
+  }, [searchCriteria, users])
 
   return (
     <div>
