@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import UserList from "./pages/UserList";
 import Roles from "./pages/Roles";
 import Register from "./pages/Register2";
+import NotFound from "./pages/NotFound";
+import Post from "./pages/Post";
 
 function App() {
   const [user, setUser] = useState('')
@@ -19,6 +21,8 @@ function App() {
           <Route path="/counter" element={<Counter />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register setUser={setUser} />} />
+          <Route path="/posts/:id" element={<Post/>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>
