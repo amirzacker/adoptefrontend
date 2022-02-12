@@ -37,8 +37,8 @@ function UserList () {
       <input type="text" className="form-control" placeholder="Recherche" onChange={handleSearch}/>
       <div className="container mt-3">
         <div className="row">
-          {
-            filteredUsers.map((user, i) =>
+          {filteredUsers.length
+            ? filteredUsers.map((user, i) =>
               <div
                 key={i}
                 className="col-6 col-sm-4 col-md-3 mb-3"
@@ -47,12 +47,13 @@ function UserList () {
               >
                 <UserProfile user={user} deleteUser={() => deleteUser(user.id)}/>
               </div>,
-            )}
-          <div className="d-flex col-3 mb-3 justify-content-center align-items-center">
-            <div className="spinner-border text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
+            )
+            : <div className="d-flex justify-content-center align-items-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
             </div>
-          </div>
+          }
         </div>
       </div>
     </div>
