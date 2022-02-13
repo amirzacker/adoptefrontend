@@ -1,5 +1,7 @@
 import propTypes from 'prop-types'
-import { useCallback } from 'react'
+import { useCallback, useContext } from 'react'
+import { Context } from '../context'
+import classnames from 'classnames'
 
 function UserProfile (props) {
 
@@ -22,8 +24,10 @@ function UserProfile (props) {
     props.deleteUser(props.user.id)
   }, [props])
 
+  const { context } = useContext(Context)
+
   return (
-    <div className="card">
+    <div className={classnames('card bg-' + context.theme, { 'text-light': context.theme === 'dark' })}>
       <img
         src="https://media.istockphoto.com/photos/winter-paysage-picture-id182902156?b=1&k=20&m=182902156&s=170667a&w=0&h=T-p_uID6Nc2l3Ww5X42LlSBODHav5Qn31UHe4PRaWNc="
         className="card-img-top" alt="..."/>
