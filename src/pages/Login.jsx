@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+
+const fakeAxios = {
+  post: (url, data) => {
+    if (url === '/api/login') {
+      if (data.login === 'MONLOGIN' && data.password === 'MONPASSWORD') {
+        return Promise.resolve({
+          status: 200,
+          data: { token: 'xxx.yyy.zzz' },
+        })
+      } else {
+        return Promise.reject({ status: 401 })
+      }
+    } else {
+      return axios.post(url, data)
+    }
+  },
+}
 
 function Login () {
+  const navigate = useNavigate()
+  const [authError, setAuthError] = useState('')
   return (
     <div className="d-flex justify-content-center">
       <div className="col-12 col-sm-10 col-md-8 col-lg-4">
@@ -17,10 +38,24 @@ function Login () {
               .required('Un mot de passe est nécessaire')
               .min(8, 'Votre mot de passe doit comporter au moins 8 caractères'),
           })}
-          onSubmit={() => {}}
+          onSubmit={async ({ login, password }) => {
+            try {
+              const response = await fakeAxios.post('/api/login', { login, password })
+              axios.defaults.headers.common['Authorization'] = `Bearer: ${response.data.token}`
+              navigate('/')
+            } catch (error) {
+              if (error.status === 401) {
+                setAuthError('Login ou mot de passe incorrects')
+              } else {
+                console.error(error)
+                setAuthError(error.message)
+              }
+            }
+          }}
         >
           {({ isSubmitting }) => (
             <Form>
+              {authError && <div className="alert alert-danger">{authError}</div>}
               <div className="mb-3">
                 <label htmlFor="login" className="form-label">Identifiant</label>
                 <Field type="text" className="form-control" id="login" name="login"/>
