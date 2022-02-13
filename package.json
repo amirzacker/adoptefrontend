@@ -21,6 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --verbose",
+    "test:e2e": "npx cypress open",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -43,5 +44,8 @@
   },
   "volta": {
     "node": "16.14.0"
+  },
+  "devDependencies": {
+    "cypress": "^9.4.1"
   }
 }
