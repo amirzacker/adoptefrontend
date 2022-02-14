@@ -1,11 +1,12 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import propTypes from 'prop-types'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
+import { Context } from '../context'
 
-function Register (props) {
+function Register () {
+  const { dispatch } = useContext(Context)
   const [countries, setCountries] = useState([])
   useEffect(() => {
     axios
@@ -34,7 +35,7 @@ function Register (props) {
             try {
               await axios.post('https://jsonplaceholder.typicode.com/users', values)
               setSubmitting(false)
-              props.setUser(values.name)
+              dispatch({ type: 'setUser', payload: values })
               navigate('/')
             } catch (error) {
               setSubmitting(false)
@@ -78,10 +79,6 @@ function Register (props) {
       </div>
     </div>
   )
-}
-
-Register.propTypes = {
-  setUser: propTypes.func.isRequired,
 }
 
 export default Register
