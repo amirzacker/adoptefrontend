@@ -1,8 +1,8 @@
 import { useContext } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Counter from './pages/Counter'
-import Header from './components/Header'
-import Login from './pages/Login'
+import Header from './components/header/Header'
+import Login from './pages/login/Login'
 import UserList from './pages/UserList'
 import Roles from './pages/Roles'
 import Register from './pages/Register2'
@@ -11,15 +11,17 @@ import Post from './pages/Post'
 import User from './pages/User'
 import { Context } from './context'
 import classnames from 'classnames'
+import Footer from './components/footer/Footer'
+import Navbar from './components/navbar/Navbar'
+import Home from './pages/home/Home'
 
 function App () {
-  const { context } = useContext(Context)
+  //const { context } = useContext(Context)
   return (
-    <div className={classnames('min-vh-100 bg-' + context.theme, { 'text-light': context.theme === 'dark' })}>
-      <Header/>
-      <div className="p-3">
+    <div>
+      <Navbar/>
         <Routes>
-          <Route path="/" element={<UserList/>}/>
+          <Route path="/" element={<Home/>}/>
           <Route path="/roles" element={<Roles/>}/>
           <Route path="/counter" element={<Counter/>}/>
           <Route path="/login" element={<Login/>}/>
@@ -28,7 +30,7 @@ function App () {
           <Route path="/users/:id" element={<User/>}/>
           <Route path="*" element={<NotFound/>}/>
         </Routes>
-      </div>
+      <Footer/>
     </div>
   )
 }

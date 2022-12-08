@@ -25,7 +25,7 @@ const fakeAxios = {
   },
 }
 
-function Login () {
+function Login1 () {
   const { dispatch } = useContext(Context)
   const navigate = useNavigate()
   const [authError, setAuthError] = useState('')
@@ -83,4 +83,4 @@ function Login () {
   )
 }
 
-export default Login
+export default Login1
