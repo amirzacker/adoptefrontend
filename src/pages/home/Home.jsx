@@ -17,7 +17,9 @@ function Home () {
         <img src="assets/img/6.jpg" className="img-fluid" id="img-header" alt="header-picture"/>
         <div className="slogan-text">
             <p>Vous êtes in <b>THE RIGHT PLACE</b> pour trouver des profils appropriés à votre entreprise</p>
+  
         </div>
+       
     </div>
 
     <div className="pic-ctn">

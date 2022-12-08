@@ -29,7 +29,7 @@ function Navbar () {
                         </li>
 
                         <li className="nav-item navbarhover">
-                            <Link className="link link--thebe" to="#students-carousel">Students</Link>
+                            <Link className="link link--thebe" to="/students">Students</Link>
                         </li>
                         <li className="nav-item navbarhover">
                             <div className="right-menu">

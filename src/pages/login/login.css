@@ -14,15 +14,15 @@ main {
 
 .container {
     position: relative;
-    /* display: flex; */
+    display: flex;
     justify-content: right;
 }
 
-form {
+.login {
     background: linear-gradient(62deg, #E35226, #262D2A);
     padding: 3rem;
     height: 100%;
-    width: 40%;
+    width: 60%;
     border-radius: 20px;
     border-left: 1px solid rgba(255, 255, 255, .3);
     border-top: 1px solid rgba(255, 255, 255, .3);
@@ -46,7 +46,7 @@ form {
     width: 40%;
 }
 
-p {
+.welcome {
     color: white;
     font-weight: 500;
     opacity: .7;
@@ -62,7 +62,7 @@ form a {
 }
 
 form a:hover {
-    text-shadow: 2px 2px 6px rgb(0, 0, 0);
+    color: black;
 }
 
 input {
@@ -92,7 +92,7 @@ input:hover,
 input[type="email"]:focus,
 input[type="password"]:focus {
     background: rgba(0, 0, 0, .1);
-    box-shadow: 4px 4px 60px 8px rgba(0, 0, 0, .2);
+    box-shadow: 4px 4px 10px 8px rgba(0, 0, 0, .2);
 }
 
 input[type="submit"] {
@@ -103,7 +103,7 @@ input[type="submit"] {
 }
 
 @media screen and (max-width: 1199px) {
-    form {
+  form {
         width: 50%;
     }
 }
@@ -113,19 +113,19 @@ input[type="submit"] {
         display: flex;
         justify-content: center;
     }
-    form {
+    .login {
         width: 60%;
     }
 }
 
 @media screen and (max-width: 790px) {
-    form {
+    .login {
         width: 80%;
     }
 }
 
 @media screen and (max-width: 574px) {
-    form {
+    .login {
         width: 105%;
     }
 }

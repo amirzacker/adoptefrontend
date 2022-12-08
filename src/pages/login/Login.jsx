@@ -21,16 +21,16 @@ export default function Login() {
 
   return (
     <main>
-    <div class="mapage">
-        <div class="container">
-            <form>
-            <img src="assets/logos/logodef.svg" alt="adopte-logo" class="adopte-logo-login"/>
-                <p>Bienvenue</p>
+    <div className="mapage">
+        <div className="container">
+            <form className="login">
+            <img src="assets/logos/logodef.svg" alt="adopte-logo" className="adopte-logo-login"/>
+                <p className="welcome">Bienvenue</p>
                 <input type="email" name="email" placeholder="Email"/><br/>
                 <input type="password" name="password" placeholder="Mot de passe"/><br/>
                 <input type="submit" name="submit" value="Connexion"/><br/>
-              <Link to="#">Vous etes un nouveau étudiant?</Link><br/>
-              <Link to="#">une entreprise?</Link>
+              <Link to="/registerStudent">Vous etes un nouveau étudiant?</Link><br/>
+              <Link to="/registerCompany">une entreprise?</Link>
             </form>
         </div>
     </div>
