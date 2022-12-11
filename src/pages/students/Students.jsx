@@ -19,7 +19,7 @@ function Students () {
                     <h2>Web Developer students</h2>
                 </Link>
                 <div className="card" >
-                    <img className="card-img-top" src="assets/img/avatar1.png" alt=""/>
+                    <Link to="/student"> <img className="card-img-top" src="assets/img/avatar1.png" alt=""/></Link>
                     <div className="card-body">
                         <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.
                         </p>

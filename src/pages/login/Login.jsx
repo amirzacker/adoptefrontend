@@ -22,7 +22,7 @@ export default function Login() {
   return (
     <main>
     <div className="mapage">
-        <div className="container">
+        <div className="container-login">
             <form className="login">
             <img src="assets/logos/logodef.svg" alt="adopte-logo" className="adopte-logo-login"/>
                 <p className="welcome">Bienvenue</p>

@@ -12,7 +12,7 @@ main {
     align-items: center;
 }
 
-.container {
+.container-login {
     position: relative;
     display: flex;
     justify-content: right;
