@@ -3,6 +3,9 @@ main {
     padding: 0;
     outline: none;
 }
+.alert {
+width: 20rem;
+}
 
 .mapage {
    /*  background: linear-gradient(45deg, #F2F8F1, #262D2A); */
