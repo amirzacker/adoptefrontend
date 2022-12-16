@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import logo from '../../logo.svg'
 import { Context } from '../../context'
 import classnames from 'classnames'
+import Socket from '../Socket'
 
 function Home () {
 /*   const { context, dispatch } = useContext(Context)
@@ -14,7 +15,7 @@ function Home () {
     <div >
          
     <div className="container-fluid container-relative" id="img-header-container">
-        <img src="assets/img/6.jpg" className="img-fluid" id="img-header" alt="header-picture"/>
+        <img src="assets/img/6.jpg" className="img-fluid" id="img-header" alt="header"/>
         <div className="slogan-text">
             <p>Vous êtes in <b>THE RIGHT PLACE</b> pour trouver des profils appropriés à votre entreprise</p>
   

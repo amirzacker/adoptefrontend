@@ -6,14 +6,15 @@ import reportWebVitals from './reportWebVitals'
 
 import './index.css'
 import 'bootstrap-icons/font/bootstrap-icons.css'
-import { ContextProvider } from './context'
+import { AuthContextProvider } from './context/AuthContext'
+
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <ContextProvider>
+      <AuthContextProvider>
         <App/>
-      </ContextProvider>
+      </AuthContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root'),
@@ -22,4 +23,4 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals()
+//reportWebVitals()

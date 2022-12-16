@@ -35,7 +35,7 @@ export default function DashboardCompany() {
 						</Link>
 					</li>
 					<li className="message-icon">
-						<Link to="#">
+						<Link to="messenger">
 							<i className="fas fa-comment"></i>
 						</Link>
 					</li>

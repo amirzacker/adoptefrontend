@@ -11,7 +11,7 @@ export default function Conversation({ conversation, currentUser }) {
 
     const getUser = async () => {
       try {
-        const res = await axios("/users?userId=" + friendId);
+        const res = await axios("/users/" + friendId);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -20,9 +20,15 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
+
   return (
     <div className="conversation">
       <img
+        className="conversationImg"
+        src="/assets/img/avatar1.png"
+        alt=""
+      />
+      {/* <img
         className="conversationImg"
         src={
           user?.profilePicture
@@ -30,8 +36,8 @@ export default function Conversation({ conversation, currentUser }) {
             : PF + "person/noAvatar.png"
         }
         alt=""
-      />
-      <span className="conversationName">{user?.username}</span>
+      /> */}
+      <span className="conversationName">{user?.email}</span>
     </div>
   );
 }

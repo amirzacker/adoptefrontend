@@ -6,6 +6,7 @@
 
 .messageTop{
     display: flex;
+    word-wrap: break-word;
 }
 
 .messageImg {
@@ -19,7 +20,7 @@
 .messageText{
     padding: 10px;
     border-radius: 20px;
-    background-color: #1877f2;
+    background-color: #262D2A;
     color: white;
     max-width: 300px;
 }
@@ -31,9 +32,10 @@
 
 .message.own{
     align-items: flex-end;
+    margin-right: 50px;
 }
 
 .message.own .messageText{
-    background-color: rgb(245, 241, 241);
-    color: black;
+    background-color: #E35226;
+    color: white;
 }

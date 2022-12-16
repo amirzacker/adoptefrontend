@@ -23,12 +23,12 @@ export default function Login() {
     <main>
     <div className="mapage">
         <div className="container-login">
-            <form className="login">
+            <form className="login" onSubmit={handleClick}>
             <img src="assets/logos/logodef.svg" alt="adopte-logo" className="adopte-logo-login"/>
                 <p className="welcome">Bienvenue</p>
-                <input type="email" name="email" placeholder="Email"/><br/>
-                <input type="password" name="password" placeholder="Mot de passe"/><br/>
-                <input type="submit" name="submit" value="Connexion"/><br/>
+                <input type="email" name="email" placeholder="Email" ref={email} required/><br/>
+                <input type="password" name="password" placeholder="Mot de passe" required minLength="6" ref={password}/><br/>
+                <input type="submit" name="submit" value="Connexion" disabled={isFetching} /><br/>
               <Link to="/registerStudent">Vous etes un nouveau étudiant?</Link><br/>
               <Link to="/registerCompany">une entreprise?</Link>
             </form>

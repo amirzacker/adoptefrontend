@@ -7,17 +7,8 @@ import { Form, Formik } from "formik";
 import { Link } from "react-router-dom";
 
 export default function DashboardStudent() {
-  const email = useRef();
-  const password = useRef();
-  const { isFetching, dispatch } = useContext(AuthContext);
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    loginCall(
-      { email: email.current.value, password: password.current.value },
-      dispatch
-    );
-  };
+  
+	const { user } = useContext(AuthContext);
 
   return (
     <main>

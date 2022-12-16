@@ -23,7 +23,7 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          followings: [...state.user.followings, action.payload],
+          adoptions: [...state?.user?.adoptions, action.payload],
         },
       };
     case "UNFOLLOW":
@@ -31,7 +31,7 @@ const AuthReducer = (state, action) => {
         ...state,
         user: {
           ...state.user,
-          followings: state.user.followings.filter(
+          adoptions: state?.user?.adoptions.filter(
             (following) => following !== action.payload
           ),
         },
