@@ -5,12 +5,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
 
 export default function Login() {
   const email = useRef();
   const password = useRef();
   const { isFetching, dispatch, error } = useContext(AuthContext);
   const [authError, setAuthError] = useState('');
+  const navigate = useNavigate()
  
 
   const handleClick = (e) => {
