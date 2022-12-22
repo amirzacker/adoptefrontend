@@ -7,56 +7,94 @@ import { AuthContext } from "../../context/AuthContext";
 import { CircularProgress } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { Link } from "react-router-dom";
+import * as Yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
 
 export default function RegisterCompany() {
-    const profilePicture = useRef();
-    const name = useRef();
-    const desc = useRef();
-    const city = useRef();
-    const email = useRef();
-    const password = useRef();
-    const passwordAgain = useRef();
+
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
-    const [emailError, setEmailError] = useState('');
+    const [userExist, setUserExist] = useState("");
 
-    useEffect(() => {
-        emailError ? setEmailError("password and user don't match") : setEmailError("") 
-        }, [emailError]);
+
+    //test error of form 
+    
+    const yupValidation = Yup.object().shape({
+        name: Yup.string()
+          .required('Veuillez saisir une valeur.')
+          .min(4, '4 caracteres minimum'),
+        email: Yup.string().required('Email requise').email(),
+        city: Yup.string().required('Ville requise'),
+        desc: Yup.string().required('Description requise'),
+        password: Yup.string()
+        .required("Mot de passe requis")
+        .min(10, "Mot de passe requis minimum 10 caractères")
+        .max(20, "Mot de passe requis maximum 20 caractères")
+        .matches(/([0-9])/, "Au moins un entier"),
+        cpassword: Yup.string()
+        .required("Mot de passe de confirmation requis")
+        .min(10, "Mot de passe requis minimum 10 caractères")
+        .max(20, "Mot de passe requis maximum 20 caractères")
+        .matches(/([0-9])/, "Au moins un entier")
+        .oneOf([Yup.ref("password")], "Mot de passe non identiques"),
+        acceptTerms: Yup.bool().oneOf(
+            [true],
+            "Accepter les conditions est obligatoire"
+        ),
+        })
+      const formOptions = { resolver: yupResolver(yupValidation) }
+      const { register, handleSubmit, reset, formState } = useForm(formOptions)
+      const { errors } = formState;
+
+ 
+
+
+    //test error of form 
+
+
+
   
-    const handleClick = async (e) => {
-      e.preventDefault();
-      if (passwordAgain.current.value !== password.current.value) {
-        passwordAgain.current.setCustomValidity("Passwords don't match!");
-      } else {
-        const user = {
-          name: name.current.value,
-          desc: name.current.value,
-          city: name.current.value,
-          email: email.current.value,
-          isCompany: true,
-          password: password.current.value,
-        };
-        if (file) {
-            const data = new FormData();
-            const fileName = Date.now() + file.name;
-            data.append("name", fileName);
-            data.append("file", file);
-            user.profilePicture = fileName;
-            console.log(user);
-            try {
-                await axios.post("/uploads",data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-        try {
-          await axios.post("/users", user);
-          navigate("/login");
-        } catch (err) {
-          console.log(err);
-        }
-      }
+    const handleClick = async (data) => {
+   
+    try {
+        await axios.get("/users/email/"+ data.email)
+        //Test if Email already exists in the database
+        //console.log(uu);
+        setUserExist('Email already exists in the database');
+    } catch (error) {
+         // Continue with the form submission if the email does not exist
+         //alert('Email does not exist. Form submission successful');
+
+         const user = {
+            name: data.name,
+            desc: data.desc,
+            city: data.city,
+            email: data.email,
+            isCompany: true,
+            password: data.password,
+          };
+          if (file) {
+              const data = new FormData();
+              const fileName = Date.now() + file.name;
+              data.append("name", fileName);
+              data.append("file", file);
+              user.profilePicture = fileName;
+              try {
+                  await axios.post("/uploads",data);
+              } catch (error) {
+                  console.log(error);
+              }
+          }
+          try {
+            await axios.post("/users", user);
+            navigate("/login");
+          } catch (err) {
+            console.log(err);
+          }
+    }    
+
+
     };
 
   return (
@@ -74,32 +112,43 @@ export default function RegisterCompany() {
                 <p>Ajoutez votre logo</p>
 
             </div>
-            <form className="form-container" onSubmit={handleClick}>
+            <form className="form-container" onSubmit={handleSubmit(handleClick)}>
                 <div className="form-group">
                     <label className="form-label">Nom</label>
                     <input type="file" className="form-control form-control-lg" style={{display: "none"}}  id="profilePicture" accept=".png,.jpeg,.jpg" onChange={(e) => setFile(e.target.files[0])}/>
-                    <input type="text" className="form-control form-control-lg" placeholder="Entrez votre nom"  ref={name}/>
+                    <input type="text" className={`form-control ${errors.name ? 'is-invalid' : ''} form-control-lg`} placeholder="Entrez votre nom"   name="name" {...register('name')}/>
+                    <div className="invalid-feedback">{errors.name?.message}</div>
                 </div>
                 <div className="form-group">
                     <label className="form-label">Ville</label>
-                    <input type="text" className="form-control form-control-lg" placeholder="Entrez votre ville"ref={city}/>
+                    <input type="text" className={`form-control ${errors.city ? 'is-invalid' : ''} form-control-lg`} {...register('city')} name="city" placeholder="Entrez votre ville" />
+                    <div className="invalid-feedback">{errors.city?.message}</div>
                 </div>
                 <div className="form-group">
                     <label className="form-label">Description</label>
-                    <textarea className="form-control form-control-lg " rows="6"  ref={desc}></textarea>
+                    <textarea className={`form-control ${errors.desc ? 'is-invalid' : ''} form-control-lg`} {...register('desc')} name="desc" rows="6" />
+                    <div className="invalid-feedback">{errors.desc?.message}</div>
                 </div>
                 <div className="form-group">
-                {emailError && <div className="alert alert-danger">{emailError}</div>}
                     <label className="form-label">Email</label>
-                    <input type="email" className="form-control form-control-lg" placeholder="Entrez votre email" required ref={email}/>
+                    <input type="text" className={`form-control ${errors.email ? 'is-invalid' : ''} form-control-lg`} {...register('email')} placeholder="Entrez votre email" name="email" />
+                    <div className="invalid-feedback">{errors.email?.message}</div>
+                    {userExist && <div className="alert alert-danger">{userExist}</div>}
                 </div>
                 <div className="form-group">
                     <label className="form-label">Mot de passe</label>
-                    <input type="password" className="form-control form-control-lg" placeholder="Entrez votre mot de passe" required ref={password}/>
+                    <input type="password" className={`form-control ${errors.password ? 'is-invalid' : ''} form-control-lg`} {...register('password')} name="password" placeholder="Entrez votre mot de passe" />
+                    <div className="invalid-feedback">{errors.password?.message}</div>
                 </div>
                 <div className="form-group">
                     <label className="form-label">Confirmation de mot de passe</label>
-                    <input type="password" className="form-control form-control-lg" placeholder="Confirmez votre mot de passe" required ref={passwordAgain}/>
+                    <input type="password" className={`form-control ${errors.cpassword ? 'is-invalid' : ''} form-control-lg`} {...register('cpassword')} name="cpassword" placeholder="Confirmez votre mot de passe" />
+                    <div className="invalid-feedback">{errors.cpassword?.message}</div>
+                </div>
+                <div className="form-group">
+                    <label className="form-label">J'ai lu et j'accepte les conditions</label>
+                    <input type="checkbox" className={`form-check-input ${errors.acceptTerms ? 'is-invalid' : ''} `} {...register('acceptTerms')} style={{padding: "10px", margin: "0px 0px 10px 10px" }} name="acceptTerms" />
+                    <div className="invalid-feedback">{errors.acceptTerms?.message}</div>
                 </div>
 
                 <div className="form-group submit-subscribe-button-div">
