@@ -16,8 +16,8 @@ import Students from './pages/students/Students'
 import Student from './pages/student/Student'
 import RegisterStudent from './pages/registerStudent/RegisterStudent'
 import RegisterCompany from './pages/registerCompany/RegisterCompany'
-import DashboardStudent from './pages/dashboardStudent/DashboardStudent'
-import DashboardStudentAdoption from './pages/dashboardStudent/DashboardStudentAdoption'
+import Dashboard from './pages/dashboard/Dashboard'
+import DashboardStudentAdoption from './pages/dashboard/DashboardStudentAdoption'
 import Messenger from './pages/messengerx/Messenger';
 import { AuthContext } from "./context/AuthContext";
 
@@ -33,14 +33,16 @@ function App () {
           <Route path="/student/:id" element={<Student/>}/>
           <Route path="/registerStudent" element={<RegisterStudent/>}/>
           <Route path="/registerCompany" element={<RegisterCompany/>}/>
-          <Route path="/dashboardStudent" element={<DashboardStudent/>}/>
           <Route path="/dashboardStudentAdoption" element={<DashboardStudentAdoption/>}/>
  
-          {user ? <Route path="/login" element={<Navigate to="/dashboardStudent" />}/>  : 
+          {user ? <Route path="/login" element={<Navigate to="/dashboard" />}/>  : 
           <Route path="/login" element={<Login/>}/>
           }
           {!user ? <Route path="/messenger" element={<Navigate to="/login" />}/>  : 
           <Route path="/messenger" element={<Messenger/>}/>
+          }
+          {!user ? <Route path="/dashboard" element={<Navigate to="/login" />}/>  : 
+          <Route path="/dashboard" element={<Dashboard/>}/>
           }
       
           <Route path="/register" element={<Register/>}/>

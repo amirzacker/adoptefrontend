@@ -1,5 +1,5 @@
 import "./messenger.css";
-import "./dashboard.css";
+import "./dashboardM.css";
 import Conversation from "../../components/conversations/Conversation";
 import Message from "../../components/message/Message";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -15,7 +15,6 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const socket = useRef();
   const { user } = useContext(AuthContext);
   const scrollRef = useRef();
@@ -119,22 +118,22 @@ export default function Messenger() {
 				</div>
 				<div className="center-icons-dashboard">
 					<li className="homes-icon">
-						<Link to="#">
+						<Link to="/dashboard">
 							<i className="fas fa-house-user"></i>
 						</Link>
 					</li>
 					<li className="message-icon">
-						<Link to="#">
+						<Link to="/messenger">
 							<i className="fas fa-comment"></i>
 						</Link>
 					</li>
 					<li className="user-icon">
-						<Link to="/dashboardStudentAdoption">
+						<Link to="/dashboard">
 							<i className="fas fa-users"></i>
 						</Link>
 					</li>
 					<li className="bell-icon">
-						<Link to="#">
+						<Link to="/dashboard">
 							<i className="fas fa-bell"></i>
 						</Link>
 					</li>
