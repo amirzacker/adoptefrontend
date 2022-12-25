@@ -17,9 +17,9 @@ import Student from './pages/student/Student'
 import RegisterStudent from './pages/registerStudent/RegisterStudent'
 import RegisterCompany from './pages/registerCompany/RegisterCompany'
 import Dashboard from './pages/dashboard/Dashboard'
-import DashboardStudentAdoption from './pages/dashboard/DashboardStudentAdoption'
 import Messenger from './pages/messengerx/Messenger';
 import { AuthContext } from "./context/AuthContext";
+import Contact from './pages/contact/Contact'
 
 function App () {
   //const { context } = useContext(Context)
@@ -30,10 +30,10 @@ function App () {
         <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/students" element={<Students/>}/>
+          <Route path="/contact" element={<Contact/>}/>
           <Route path="/student/:id" element={<Student/>}/>
           <Route path="/registerStudent" element={<RegisterStudent/>}/>
           <Route path="/registerCompany" element={<RegisterCompany/>}/>
-          <Route path="/dashboardStudentAdoption" element={<DashboardStudentAdoption/>}/>
  
           {user ? <Route path="/login" element={<Navigate to="/dashboard" />}/>  : 
           <Route path="/login" element={<Login/>}/>

@@ -100,7 +100,14 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-
+  const Logout = () => {
+    // after delete remove  localStorage
+      localStorage.removeItem('user');
+    //and reload page to deconnecte
+      window.location.reload();
+  
+       
+    };
 
   
 
@@ -138,7 +145,7 @@ export default function Messenger() {
 						</Link>
 					</li>
                 <li>
-					<Link to="#"><img src="assets/svg/iconnavdashboard/deconnexion.svg" alt="deconnexion" id="logout-icon"/></Link>
+					<Link onClick={Logout} to="#"><img src="assets/svg/iconnavdashboard/deconnexion.svg" alt="deconnexion" id="logout-icon"/></Link>
 				</li>
 			</div>
 		</ul>
@@ -154,9 +161,9 @@ export default function Messenger() {
   <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            {conversations.map((c) => (
-              <div  onClick={() => setCurrentChat(c)}>
-                <Conversation key={c._id}  conversation={c} currentUser={user?.user} />
+            {conversations.map((c, i) => (
+              <div key={i} onClick={() => setCurrentChat(c)}>
+                <Conversation key={i}  conversation={c} currentUser={user?.user} />
               </div>
             ))}
           </div>
@@ -166,9 +173,9 @@ export default function Messenger() {
             {currentChat ? (
               <>
                 <div className="chatBoxTop">
-                  {messages.map((m) => (
-                    <div  ref={scrollRef}>
-                      <Message key={m._id} message={m} own={m.sender === user?.user?._id} />
+                  {messages.map((m, i) => (
+                    <div key={i} ref={scrollRef}>
+                      <Message key={i} message={m} own={m.sender === user?.user?._id} />
                     </div>
                   ))}
                 </div>

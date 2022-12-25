@@ -32,6 +32,9 @@ function Navbar () {
                             <Link className="link link--thebe" to="/students">Students</Link>
                         </li>
                         <li className="nav-item navbarhover">
+                            <Link className="link link--thebe" to="/contact">Contactez Nous</Link>
+                        </li>
+                        <li className="nav-item navbarhover">
                             <div className="right-menu">
                                 <Link className="link link--thebe " to="#">Domaine d'études</Link>
                                 <div className="dropdown-menu-domaine">

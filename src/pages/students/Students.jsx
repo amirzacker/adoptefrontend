@@ -2,158 +2,125 @@ import "./students.css";
 import axios from "axios";
 import { useCallback, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom'
-import logo from "../../logo.svg";
-import { Context } from "../../context";
+import { useNavigate } from "react-router-dom";
 import classnames from "classnames";
+import Student from "../../components/student/Student";
+import { Pagination } from '@material-ui/lab';
+
 
 function Students() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
-  
+  const [domain, setDomain] = useState([]);
 
-  const [searchDomain, setSearchDomain] = useState('')
-  const handleDomain = useCallback(event => setSearchDomain(event.target.value), [])
+  const [searchDomain, setSearchDomain] = useState("");
+  const handleDomain = useCallback(
+    (event) => { event.preventDefault(); setSearchDomain(event.target.value)} ,
+    []
+  );
 
-  const [filteredUsers, setFilteredUsers] = useState([])
+  const [filteredUsers, setFilteredUsers] = useState([]);
   useEffect(() => {
-    setFilteredUsers(users.filter(user => user?.domain?.name?.toLowerCase().includes(searchDomain.toLowerCase() )))
-  }, [searchDomain, users])
-
+    setFilteredUsers(
+      users.filter((user) =>
+        user?.domain?.name?.toLowerCase().includes(searchDomain.toLowerCase())
+      )
+    );
+  }, [searchDomain, users]);
 
   useEffect(() => {
     // Axios version
     axios.get("/users").then((result) => setUsers(result.data));
   }, [users]);
+
+  useEffect(() => {
+    // Axios version
+    axios.get("/domains").then((result) => setDomain(result.data));
+  }, [domain]);
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8 ;
+  const pages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const paginatedData = filteredUsers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handleChange = (event, page) => {
+    setCurrentPage(page);
+  };
+
   return (
     <div>
       <section className="content" id="profiletudiants">
         <div className="container">
           <div className="row rowcards">
-            <Link to="#">
-              <h2>Web Developer students</h2>
-            </Link>
-        {
-             users.map((student) => (
-              
-       
-            <div class="card">
-              <Link to="/student">
-                {" "}
-                <img
-                  className="card-img-top"
-                  src="assets/img/avatar1.png"
-                  alt=""
-                />
-              </Link>
-              <div class="card-body">
-                <span class="card-text fw-bold">{student.firstname}</span>
-                <br />
-                <span className="fw-normal">Recherche:</span>
-                <span  className="fw-bold text-danger"> {student.searchType?.name}</span>
-                <br />
-                <span class="card-text fw-lighter fst-italic ">Du: 01-01-1997 Au: 01-01-1997 </span>
-                <p>{student.domain?.name}</p>
-                <Link   to={"/student/" + student._id}>
-                  <h6 className="text-center btn btn-secondary btn-bg">Voir profil</h6>
-                </Link>
-            
+
+              <h2></h2>
+   
+            <div style={{ display: "flex" }}>
+              <div className="form">
+                <form className="container" style={{ display: "flex" }}>
+                  <div>
+                    <select className="form-control" onChange={handleDomain}>
+                      <option value="">selectionnez.. domain</option>
+                      {domain.map((d, i) => (
+                        <option key={i} value={d._name}>
+                          {d.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </form>
+              </div>
+              <div className="form">
+                <form className="container" style={{ display: "flex" }}>
+                  <div>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="filtrez... domain"
+                      onChange={handleDomain}
+                    />
+                  </div>
+                  <div  id="top-pagination" className="d-flex justify-content-end align-items-start">
+               
+                 <Pagination count={pages} page={currentPage} onChange={handleChange} />
+                </div> 
+                </form>
               </div>
             </div>
-     ))
-    }
-           
+            {paginatedData.length ? (
+              paginatedData.map((student, i) => (
+                <Student key={i} student={student} />
+              ))
+            ) : (
+              <div className="d-flex justify-content-center align-items-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+              </div>
+            )}
+         
           </div>
         </div>
       </section>
 
-      <section className="content" id="profiletudiants2">
+      <section className="content" id="profiletudiants">
         <div className="container">
           <div className="row rowcards">
-            <Link to="">
-              <h2>Business students</h2>
-            </Link>
-            <div className="card">
-              <img
-                className="card-img-top"
-                src="assets/img/avatar1.png"
-                alt=""
-              />
-              <div className="card-body">
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-img-top"
-                src="assets/img/avatar2.webp"
-                alt=""
-              />
-              <div className="card-body">
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-img-top"
-                src="assets/img/avatar3.png"
-                alt=""
-              />
-              <div className="card-body">
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
-            <div className="card">
-              <img
-                className="card-img-top"
-                src="assets/img/avatar4.webp"
-                alt=""
-              />
-              <div className="card-body">
-                <p className="card-text">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </p>
-              </div>
-            </div>
+              <div className="d-flex justify-content-center align-items-center">
+               
+              <Pagination count={pages} page={currentPage} onChange={handleChange} />
+              </div> 
           </div>
         </div>
       </section>
 
-      <div>
-      <h1>Liste des utilisateurs</h1>
-      <input type="text" className="form-control" placeholder="Recherche par domain" onChange={handleDomain}/>
-      <div className="container mt-3">
-        <div className="row">
-          {filteredUsers.length
-            ? filteredUsers.map((user, i) =>
-              <div
-                key={i}
-                className="col-6 col-sm-4 col-md-3 mb-3"
-                style={{ cursor: 'pointer' }}
-              >
-                {user.firstname}{user.domain?.name}
-              </div>,
-            )
-            : <div className="d-flex justify-content-center align-items-center">
-              <div className="spinner-border text-primary" role="status">
-                <span className="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          }
-        </div>
-      </div>
-    </div>
+
+
       
     </div>
   );

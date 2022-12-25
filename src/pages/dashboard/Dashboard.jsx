@@ -1,9 +1,6 @@
 import { useContext, useRef } from "react";
 import "./dashboard.css";
-import { loginCall } from "../../apiCalls";
 import { AuthContext } from "../../context/AuthContext";
-import { CircularProgress } from "@material-ui/core";
-import { Form, Formik } from "formik";
 import { Link } from "react-router-dom";
 import StudentHome from "../../components/dashboard/StudentHome";
 import { useState } from "react";
@@ -11,9 +8,13 @@ import Adoption from "../../components/dashboard/Adoption";
 import CompanyHome from "../../components/dashboard/CompanyHome";
 import Home from "../../components/dashboard/Home";
 
+
 export default function Dashboard() {
   
 	const { user } = useContext(AuthContext);
+
+	const [userssColor1, setUserssColor1] = useState('');
+	const [userssColor2, setUserssColor2] = useState('');
 	
 	const [currentComponent, setCurrentComponent] = useState(<Home currentUser={user}/>);
 
@@ -23,16 +24,33 @@ export default function Dashboard() {
 			setCurrentComponent(<CompanyHome currentUser={user}/>);
         } else if (user?.user?.isStudent) {
 			setCurrentComponent(<StudentHome currentUser={user}/>);
+		
         }
-		setCurrentComponent(<StudentHome currentUser={user}/>);
+		setUserssColor2('homess-icon');
+		setUserssColor1('');
 	  };
 
 	const handleAdoption = () => {
 		setCurrentComponent( <Adoption currentUser={user}/>);
+		setUserssColor1('userss-icon');
+		setUserssColor2('');
+
 	  };
+
+
+	  const Logout = () => {
+	// after delete remove  localStorage
+	  localStorage.removeItem('user');
+	//and reload page to deconnecte
+	  window.location.reload();
+
+	   
+	  };
+
 
   return (
     <main>
+	
        <div className="sidebar">
 			<ul>
 				<div className="student-avatar-container">
@@ -41,7 +59,7 @@ export default function Dashboard() {
 					</li>
 				</div>
 				<div className="center-icons-dashboard">
-					<li className="home-icon">
+					<li className={`home-icon ${userssColor2}`}>
 						<Link onClick={handleHome}  to="#">
 							<i className="fas fa-house-user"></i>
 						</Link>
@@ -51,7 +69,7 @@ export default function Dashboard() {
 							<i className="fas fa-comment"></i>
 						</Link>
 					</li>
-					<li  className="users-icon">
+					<li  className={`users-icon ${userssColor1}`}>
 						<Link onClick={handleAdoption} to="#">
 							<i className="fas fa-users"></i>
 						</Link>
@@ -62,7 +80,7 @@ export default function Dashboard() {
 						</Link>
 					</li>
                 <li>
-					<Link to="#"><img src="/assets/svg/iconnavdashboard/deconnexion.svg" alt="deconnexion" id="logout-icon"/></Link>
+					<Link onClick={Logout} to="#"><img src="/assets/svg/iconnavdashboard/deconnexion.svg" alt="deconnexion" id="logout-icon"/></Link>
 				</li>
 			</div>
 		</ul>
