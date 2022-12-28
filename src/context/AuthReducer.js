@@ -18,7 +18,7 @@ const AuthReducer = (state, action) => {
         isFetching: false,
         error: true,
       };
-    case "FOLLOW":
+    case "ADOPTION":
       return {
         ...state,
         user: {
@@ -26,7 +26,7 @@ const AuthReducer = (state, action) => {
           adoptions: [...state?.user?.adoptions, action.payload],
         },
       };
-    case "UNFOLLOW":
+    case "UNADOPTION":
       return {
         ...state,
         user: {

@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom'
 import logo from '../../logo.svg'
 import { Context } from '../../context'
 import classnames from 'classnames'
+import { AuthContext } from '../../context/AuthContext'
 
 function Navbar () {
-  const { context, dispatch } = useContext(Context)
-  const switchTheme = useCallback(() => {
-    dispatch({ type: 'switchTheme' })
-  }, [dispatch])
+const { user } = useContext(AuthContext);
+
   return (
     <div>  
       <header className="sticky-top">
@@ -35,32 +34,12 @@ function Navbar () {
                             <Link className="link link--thebe" to="/contact">Contactez Nous</Link>
                         </li>
                         <li className="nav-item navbarhover">
-                            <div className="right-menu">
-                                <Link className="link link--thebe " to="#">Domaine d'études</Link>
-                                <div className="dropdown-menu-domaine">
-                                    <Link to="#">Informatique</Link>
-                                    <Link to="#">Commerce et management</Link>
-                                    <Link to="#">Santé</Link>
-                                    <Link to="#">Restauration</Link>
-                                    <Link to="#">Logistique</Link>
-                                    <Link to="#">Art et spectacles</Link>
-                                    <Link to="#">Autres domaines</Link>
-                                </div>
-                            </div>
+                            <Link className="link link--thebe" to="/about-us">A propos</Link>
                         </li>
-                        <li className="nav-item navbarhover">
-                            <div className="input-group search-case">
-                                <div className="form-outline">
-                                    <input type="search" id="form1" className="form-control" />
-                                </div>
-                                <button type="button" className="btn btn-search">
-                                  <i className="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </li>
+                  
                         <li className="nav-item nav-item-login  glow-on-hover">
                             <div className="login-container1">
-                                <Link className="nav-link nav-login" to="/login">Connexion</Link>
+                                <Link className="nav-link nav-login" to="/login">{! user ? "Connexion" : "Dashboard"}</Link>
 
                             </div>
                         </li>
@@ -73,7 +52,7 @@ function Navbar () {
     </header>
     <div className="container login-responsive">
         <div className="login-container">
-            <Link className="nav-link nav-login glow-on-hover2" to="/login">Connexion</Link>
+            <Link className="nav-link nav-login glow-on-hover2" to="/login">{! user ? "Connexion" : "Dashboard"}</Link>
 
         </div>
     </div>

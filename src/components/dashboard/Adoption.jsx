@@ -1,15 +1,19 @@
 import axios from "axios";
-import { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import AdoptionUnit from "./AdoptionUnit";
 import { Pagination } from '@material-ui/lab';
 import { useCallback } from "react";
+import FlashMessage from "../alert/FlashMessage";
 
 
 
 
 export default function Adoption({ currentUser }) {
   const [adoptions, setAdoption] = useState([]);
+
+  const [success, setSuccess] = useState(false);
+
+  const [message, setMessage] = useState("");
   
 
   useEffect(() => {
@@ -32,11 +36,6 @@ export default function Adoption({ currentUser }) {
     getAdoptions();
   }, [currentUser,adoptions]);
 
-  const deleteUser =  useCallback(userId => {
-    setAdoption(adoptions.filter(user => user.id !== userId))
-  }, [adoptions, currentUser])
-
-
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -55,8 +54,12 @@ export default function Adoption({ currentUser }) {
 
   const handleClickUnadopte =  useCallback(userId => {
     setAdoption(adoptions.filter(user => user.id !== userId))
+    setMessage(" étudiant supprimé avec succes"); 
+    setSuccess(true);
     console.log(userId);
   }, [adoptions])
+
+
 
   return (
     <div>
@@ -74,7 +77,9 @@ export default function Adoption({ currentUser }) {
             : "Vous etes adoptés par : "}
         </p>
       </div>
-
+                {
+                  success ? <FlashMessage message={message} /> : ""
+                }
       <div className="row rowcards">
             {paginatedData.length  ? (
               paginatedData.map((user, i) => (
@@ -85,6 +90,7 @@ export default function Adoption({ currentUser }) {
                 <div className="spinner-border text-primary" role="status">
                   <span className="visually-hidden">Loading...</span>
                 </div>
+                  <span className="visually">Pas d'adoption encours...</span>
               </div>
             )}
       </div>

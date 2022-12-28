@@ -68,8 +68,7 @@
 .noConversationText {
   position: absolute;
   top: 10%;
-  font-size: 50px;
-  color: rgb(224, 220, 220);
+  font-size: 60px;
   cursor: default;
 }
 
@@ -88,5 +87,8 @@
 
   .chatOnline{
     flex: 1px;
+  }
+  .noConversationText {
+    font-size: 30px;
   }
 }

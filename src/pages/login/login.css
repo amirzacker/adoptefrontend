@@ -79,7 +79,6 @@ input {
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     -moz-backdrop-filter: blur(5px);
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, .2);
     color: white;
     font-weight: 500;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
@@ -91,12 +90,7 @@ input {
     color: white;
 }
 
-input:hover,
-input[type="email"]:focus,
-input[type="password"]:focus {
-    background: rgba(0, 0, 0, .1);
-    box-shadow: 4px 4px 10px 8px rgba(0, 0, 0, .2);
-}
+
 
 input[type="submit"] {
     cursor: pointer;

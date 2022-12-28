@@ -1,43 +1,31 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import "./contact.css";
 import { useNavigate } from "react-router";
-import axios from "axios";
-import { loginCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
-import { CircularProgress } from "@material-ui/core";
-import { Form, Formik } from "formik";
-import { Link } from "react-router-dom";
+
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
+import emailjs from '@emailjs/browser';
+import FlashMessage from "../../components/alert/FlashMessage";
+
 
 export default function Contact() {
-
+    const form = useRef();
     const navigate = useNavigate();
-    const [file, setFile] = useState(null);
-    const [userExist, setUserExist] = useState("");
+    const [success, setSuccess] = useState(false);
+
+    const [message, setMessage] = useState("");
 
 
     //test error of form 
     
     const yupValidation = Yup.object().shape({
         name: Yup.string()
-          .required('Veuillez saisir une valeur.')
-          .min(4, '4 caracteres minimum'),
+          .required('Veuillez saisir une valeur.'),
         email: Yup.string().required('Email requise').email(),
-        city: Yup.string().required('Ville requise'),
-        desc: Yup.string().required('Description requise'),
-        password: Yup.string()
-        .required("Mot de passe requis")
-        .min(10, "Mot de passe requis minimum 10 caractères")
-        .max(20, "Mot de passe requis maximum 20 caractères")
-        .matches(/([0-9])/, "Au moins un entier"),
-        cpassword: Yup.string()
-        .required("Mot de passe de confirmation requis")
-        .min(10, "Mot de passe requis minimum 10 caractères")
-        .max(20, "Mot de passe requis maximum 20 caractères")
-        .matches(/([0-9])/, "Au moins un entier")
-        .oneOf([Yup.ref("password")], "Mot de passe non identiques"),
+        autor: Yup.string().required('Auteur  requis'),
+        subject: Yup.string().required('Sujet requis'),
+        message: Yup.string().required('Message requise'),
         acceptTerms: Yup.bool().oneOf(
             [true],
             "Accepter les conditions est obligatoire"
@@ -55,45 +43,28 @@ export default function Contact() {
 
 
   
+    const handle = async (data) => {
+
+        
+        setMessage("test de navigate");
+        setSuccess(true)
+        reset()
+        
+    };
+
+  
     const handleClick = async (data) => {
-   
-    try {
-        await axios.get("/users/email/"+ data.email)
-        //Test if Email already exists in the database
-        //console.log(uu);
-        setUserExist('Email already exists in the database');
-    } catch (error) {
-         // Continue with the form submission if the email does not exist
-         //alert('Email does not exist. Form submission successful');
 
-         const user = {
-            name: data.name,
-            desc: data.desc,
-            city: data.city,
-            email: data.email,
-            isCompany: true,
-            password: data.password,
-          };
-          if (file) {
-              const data = new FormData();
-              const fileName = Date.now() + file.name;
-              data.append("name", fileName);
-              data.append("file", file);
-              user.profilePicture = fileName;
-              try {
-                  await axios.post("/uploads",data);
-              } catch (error) {
-                  console.log(error);
-              }
-          }
-          try {
-            await axios.post("/users", user);
-            navigate("/login");
-          } catch (err) {
-            console.log(err);
-          }
-    }    
-
+        
+          emailjs.sendForm('service_7s3s4up', 'template_ydlmofw', form.current, 'vZuhD0JUkXi3hPizJ')
+          .then((result) => {
+              console.log(result.text);
+              setMessage(result.data);
+              setSuccess(true)
+              reset()
+          }, (error) => {
+              console.log(error.text);
+          });
 
     };
 
@@ -102,24 +73,16 @@ export default function Contact() {
     <div className="container">
         <div className="form-inscription">
             <div className="headersubscribe">
-                <h2>Inscription</h2>
-                <p>Ajoutez votre logo</p>
-
+                <h2>Formulaire de contact</h2>
             </div>
-            <form className="form-container" onSubmit={handleSubmit(handleClick)}>
-            <div className="form-group">
-                    <label className="form-label">Je cherche</label>
-                        <div  className="form-check">
-                        <input  className={`form-check-input ${errors.searchType ? 'is-invalid' : ''}`} {...register('searchType')}  value="" type="radio" name="searchType"  />
-                        <label className="form-check-label"> Etudiant </label>
-                        </div>
-                        <div  className="form-check">
-                        <input  className={`form-check-input ${errors.searchType ? 'is-invalid' : ''}`} {...register('searchType')}  value="" type="radio" name="searchType"  />
-                        <label className="form-check-label"> Entreprise </label>
-                        </div>
-                
-                   <div className="invalid-feedback">{errors.searchType?.message}</div>
-                </div>
+            <form className="form-container" ref={form} onSubmit={handleSubmit(handleClick)}>
+                      <select className={`form-control ${errors.autor ? 'is-invalid' : ''} form-control-lg`} name="autor" {...register('autor')} >
+                      <option value="">Vous etes ? </option>
+                        <option  value="Etudiant"> Etudiant </option>
+                        <option  value="Entreprise"> Entreprise </option>
+                    </select>
+                    <div className="invalid-feedback">{errors.autor?.message}</div>
+         
                 <div className="form-group">
                     <label className="form-label">Nom</label>
                     <input type="text" className={`form-control ${errors.name ? 'is-invalid' : ''} form-control-lg`} placeholder="Entrez votre nom"   name="name" {...register('name')}/>
@@ -127,19 +90,18 @@ export default function Contact() {
                 </div>
                 <div className="form-group">
                     <label className="form-label">Sujet :</label>
-                    <input type="text" className={`form-control ${errors.city ? 'is-invalid' : ''} form-control-lg`} {...register('city')} name="city" placeholder="Entrez votre ville" />
-                    <div className="invalid-feedback">{errors.city?.message}</div>
+                    <input type="text" className={`form-control ${errors.subject ? 'is-invalid' : ''} form-control-lg`} {...register('subject')} name="subject" placeholder="Votre sujet " />
+                    <div className="invalid-feedback">{errors.subject?.message}</div>
                 </div>
                 <div className="form-group">
                     <label className="form-label">Email</label>
                     <input type="text" className={`form-control ${errors.email ? 'is-invalid' : ''} form-control-lg`} {...register('email')} placeholder="Entrez votre email" name="email" />
                     <div className="invalid-feedback">{errors.email?.message}</div>
-                    {userExist && <div className="alert alert-danger">{userExist}</div>}
                 </div>
                 <div className="form-group">
                     <label className="form-label">Message</label>
-                    <textarea className={`form-control ${errors.desc ? 'is-invalid' : ''} form-control-lg`} {...register('desc')} name="desc" rows="6" />
-                    <div className="invalid-feedback">{errors.desc?.message}</div>
+                    <textarea className={`form-control ${errors.message ? 'is-invalid' : ''} form-control-lg`} {...register('message')} name="message" rows="6" />
+                    <div className="invalid-feedback">{errors.message?.message}</div>
                 </div>
             
                 <div className="form-group">
@@ -151,6 +113,9 @@ export default function Contact() {
                 <div className="form-group submit-subscribe-button-div">
                     <input type="submit" className="form-control form-control-lg submit-subscribe-button" value="Envoi"/>
                 </div>
+                {
+                    success ? <FlashMessage message={message} /> : ""
+                }
             </form>
         </div>
     </div>

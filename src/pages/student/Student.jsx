@@ -1,20 +1,19 @@
 import './student.css'
-import React, { useCallback, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom'
-import logo from '../../logo.svg'
-import { Context } from '../../context'
-import classnames from 'classnames'
 import { AuthContext } from '../../context/AuthContext';
-
-import { IconButton, Snackbar } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
+import FlashMessage from '../../components/alert/FlashMessage';
 
 function Student () {
     const { user } = useContext(AuthContext);
+
+    const [success, setSuccess] = useState(false);
+
+    const [message, setMessage] = useState("");
    
 
     const navigate = useNavigate();
@@ -56,24 +55,24 @@ function Student () {
       const startDate = convertDate(new Date(student?.startDate));
       const endDate = convertDate(new Date(student?.endDate));
       
-      const date = new Date(student?.age);
+      const date = new Date(student?.date);
       const anneeEncours = new Date();
 
       const age = (anneeEncours.getFullYear() - date.getFullYear());
 
-
-
       const handleConversation = async () => {
 
         try {
-            await axios.get(
+          if (user?.user?.isCompany) {
+            const res = await axios.get(
               `/conversations/find/${user?.user?._id}/${userId}`
             , { headers: {"x-access-token" : user?.token} } );
-            navigate("/messenger");
-          } catch (err) {
-            console.log(err);
+            console.log(res);
+            if (res.data) {
+              navigate("/messenger");
+            } else {
 
-            try {
+              try {
                 const data = {
                     senderId : user?.user?._id,
                     receiverId : userId
@@ -85,6 +84,15 @@ function Student () {
               console.log(err);
               navigate("/login"); 
             }
+            }
+          }else{
+            setMessage("Attention vous etes etudiant! vous ne pouver pas contacter un autre, choisisez le profil entreprise si vous vous etes trompé ");
+            setSuccess(true)
+          }
+
+          } catch (err) {
+            ! user ? navigate("/login") :  console.log(err); 
+           
 
           }
        
@@ -92,28 +100,36 @@ function Student () {
 
 
       const handleAdoption = async () => {
-
+      
             try {
+              if (user?.user?.isCompany) {
               await axios.put("/users/" + userId +"/adopte", { id : user?.user?._id} , { headers: {"x-access-token" : user?.token} });
               //navigate("/messenger");
+              setMessage("adopté avec succes");
+              setSuccess(true)
+              } else{
+                setMessage("Attention vous etes etudiant! vous ne pouver pas adopter un autre, choisisez le profil entreprise si vous vous etes trompé ");
+                setSuccess(true)
+              }
             } catch (err) {
-             ! user ? navigate("/login") : 
-              console.log(err);
+             ! user ? navigate("/login") : setMessage(" vous avez déjà adopté cet étudiant") && setSuccess(true) ; 
+             setMessage(" vous avez déjà adopté cet étudiant"); 
+             setSuccess(true)
+            //console.log(err.reponse.status);
           
             }
+            
+    
+          
        
       };
-      const [open, setOpen] = useState(false);
 
-      const handleClick = () => {
-        setOpen(true);
-      };
+
     
-      const handleClose = () => {
-        setOpen(false);
-      };
-    
-      
+      console.log(student);
+
+ 
+   
 
   return (
     <div>
@@ -121,7 +137,7 @@ function Student () {
             <div className="single-student-main">
                 <div className="firstpart">
                     <div className="profil-student">
-                        <div className="photo-student"><img  src="/assets/img/avatar1.png" alt="student"/></div>
+                        <div className="photo-student"><img  src={`${PF + student?.profilePicture}`} alt="student"/></div>
                         <div className="personal-information-student">
                             <h3>{student?.firstname}</h3>
                             <h4>{student?.lastname}</h4>
@@ -154,18 +170,21 @@ function Student () {
                         </div>
                     </div>
                 </div>
-                
+              
                 <div className="secondpart">
 
                     <h4>Ils cherchent aussi dans le même domaine</h4>
                     <div className="pic-ctn">
                     {
                      studentsSameDomain.map((student, i) => (
-                        <img key={i} onClick={() => navigate('/student/' + student._id)} src="/assets/img/avatar3.png" alt="" className="pic btn btn-link"/>
+                        <img key={i} onClick={() => navigate('/student/' + student._id)} src={`${PF + student?.profilePicture}`} alt="" className="pic btn btn-link"/>
                     ))}
 
                     </div>
                 </div>
+                {
+                  success ? <FlashMessage message={message} /> : ""
+                }
             </div>
         </div>
     </div>

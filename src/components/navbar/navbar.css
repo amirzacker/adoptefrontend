@@ -79,7 +79,7 @@
     .link--thebe {
         padding-right: 2.5rem;
         color: #262D2A;
-        text-transform: uppercase;
+      /*   text-transform: uppercase; */
     }
     
     .link--thebe::before {

@@ -1,16 +1,12 @@
 import "./students.css";
 import axios from "axios";
 import { useCallback, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import classnames from "classnames";
 import Student from "../../components/student/Student";
 import { Pagination } from '@material-ui/lab';
 
 
 function Students() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [domain, setDomain] = useState([]);
 
@@ -58,7 +54,6 @@ function Students() {
         <div className="container">
           <div className="row rowcards">
 
-              <h2></h2>
    
             <div style={{ display: "flex" }}>
               <div className="form">

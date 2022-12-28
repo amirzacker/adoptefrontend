@@ -1,12 +1,7 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./register.css";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { loginCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
-import { CircularProgress } from "@material-ui/core";
-import { Form, Formik } from "formik";
-import { Link } from "react-router-dom";
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -89,6 +84,7 @@ export default function RegisterCompany() {
           try {
             await axios.post("/users", user);
             navigate("/login");
+            reset();
           } catch (err) {
             console.log(err);
           }

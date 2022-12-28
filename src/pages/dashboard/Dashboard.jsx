@@ -12,6 +12,7 @@ import Home from "../../components/dashboard/Home";
 export default function Dashboard() {
   
 	const { user } = useContext(AuthContext);
+	const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
 	const [userssColor1, setUserssColor1] = useState('');
 	const [userssColor2, setUserssColor2] = useState('');
@@ -55,7 +56,7 @@ export default function Dashboard() {
 			<ul>
 				<div className="student-avatar-container">
 					<li className="student-avatar-dashboard">
-						<img src="/assets/img/avatar3.png" alt="avatar-student"/>
+						<img src={`${PF + user?.user?.profilePicture}`} alt="avatar-student"/>
 					</li>
 				</div>
 				<div className="center-icons-dashboard">

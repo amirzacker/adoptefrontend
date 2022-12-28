@@ -10,13 +10,21 @@ import { Switch, IconButton, Dialog,
   Button,
   } from '@material-ui/core';
 import { Delete , Cancel } from '@material-ui/icons';
+import AttachFileIcon from '@material-ui/icons/AttachFile';
+import EditIcon from '@material-ui/icons/Edit';
+import Pourcentage from "./Pourcentage";
+import EditCvMotivation from "./EditCvMotivation";
+import EditProfilStudent from "./EditProfilStudent";
 export default function StudentHome({ currentUser }) {
 
   const [open, setOpen] = useState(false);
+  const [openProfil, setOpenProfil] = useState(false);
+  const [openCv, setOpenCv] = useState(false);
 
   const [user, setUser] = useState(null);
 
   const [status, setStatus] = React.useState(currentUser?.user?.status);
+
 
 
   useEffect(() => {
@@ -33,6 +41,8 @@ export default function StudentHome({ currentUser }) {
   }, [currentUser, status]);
 
 
+
+
   const token = currentUser?.token;
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   
@@ -46,7 +56,8 @@ export default function StudentHome({ currentUser }) {
   }
 
   const timestampCv = user?.cv;
-  const timestampMo = user?.MotivationLetter;
+  const timestampMo = user?.motivationLetter
+;
 
   const startDate = convertDate(new Date(user?.startDate));
   const endDate = convertDate(new Date(user?.endDate));
@@ -56,15 +67,19 @@ export default function StudentHome({ currentUser }) {
   const DateCv = convertDate(new Date(parseInt(timestampCv)));
   const DateMo = convertDate(new Date(parseInt(timestampMo)));
 
+  console.log(timestampMo);
 
   const handleChange = async (event) => {
     try {
-      const res = await axios.put("/users/" + user?._id, { status: event.target.checked }, { headers: {"x-access-token" : token} });
+      const data = {
+        id: user?._id,
+        status: event.target.checked
+      }
+      const res = await axios.put("/users/" + user?._id, data, { headers: {"x-access-token" : token} });
       console.log(res);
       setStatus( event.target.checked );
 
     const storedObject = JSON.parse(localStorage.getItem('user'));
-
     // Update the object
     storedObject.user = res.data;
 
@@ -104,13 +119,31 @@ export default function StudentHome({ currentUser }) {
 			<div className="partition-header-profil">
 				<h4>Hello 
 					{" "} {user?.firstname}</h4>
-				<h5>Profil renseigné à 80%</h5>
+				<h5>Profil renseigné à <Pourcentage currentUser={user}/>  </h5>
+        
 				<h6>
 					<Link to="#">Modifier mon mot de passe</Link>
 			   </h6>
 			<h6>
 				<Link to="#">Modifier mon profil</Link>
 			</h6>
+      
+      <IconButton onClick={() => setOpenProfil(true)}>
+       <EditIcon fontSize="large" color="secondary"/>
+      </IconButton>
+      <Dialog open={openProfil} onClose={() => setOpenProfil(false)}>
+        <DialogTitle>Update profil</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Mise à jour du profil  <EditProfilStudent currentUser={user} token={token} /> </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenProfil(false)}>
+            <Cancel />
+            Annulez
+          </Button>
+        </DialogActions>
+      </Dialog>
 		</div>
 		<div className="partition-header-date">
 			<h4>Type de recherche :
@@ -121,9 +154,6 @@ export default function StudentHome({ currentUser }) {
 				au
         {" "} {endDate}
       </h5>
-			<h6>
-				<Link to="#">Modifier</Link>
-			</h6>
 		</div>
 		<div className="partition-header-status">
 		
@@ -137,7 +167,7 @@ export default function StudentHome({ currentUser }) {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Confirm delete</DialogTitle>
         <DialogContent>
-          <DialogContentText>Vous etes sur de bien vouloir supprimer votre compte?</DialogContentText>
+          <DialogContentText>Vous etes sur de bien vouloir supprimer votre compte?  </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>
@@ -150,41 +180,49 @@ export default function StudentHome({ currentUser }) {
           </Button>
         </DialogActions>
       </Dialog>
-
-
-
-
 		</div>
 	</div>
 	<div className="dash-partition-cv-lm">
 		<div className="partition-cv">
 			<h4>Mon CV</h4>
 			<h5>Mise à jour le {" "} {DateCv}</h5>
+		
 			<h6>
-				<a href={`${PF + "pdf.pdf"}`} target="_blank" rel="noreferrer" >Voir</a>
-			</h6>
 
-			<h6>
-				<Link to="">Modifier</Link>
+      <IconButton onClick={() => setOpenCv(true)}>
+      <AttachFileIcon fontSize="large" color="secondary"/>
+      </IconButton>
+      <Dialog open={openCv} onClose={() => setOpenCv(false)}>
+        <DialogTitle>Update Cv et Motivation</DialogTitle>
+        <DialogContent>
+          <DialogContentText>  <EditCvMotivation currentUser={user} token={token} /> </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenCv(false)}>
+            <Cancel />
+            Annulez
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <a href={`${PF + user?.cv}`} target="_blank" rel="noreferrer" >Voir</a>
 			</h6>
 		</div>
+   
 		<div className="partition-lm">
 			<h4>Ma lettre de motivation</h4>
 			<h5>Mise à jour le {" "} {DateMo}</h5>
 			<h6>
-      <a href={`${PF + "pdf.pdf"}`} target="_blank" rel="noreferrer" >Voir</a>
-			</h6>
-			<h6>
-				<Link to="#">Modifier</Link>
+      <IconButton onClick={() => setOpenCv(true)}>
+      <AttachFileIcon fontSize="large" color="secondary"/>
+      </IconButton>
+      <a href={`${PF + user?.motivationLetter}`} target="_blank" rel="noreferrer" >Voir</a>
 			</h6>
 		</div>
 	</div>
 	<div className="dash-partition-description">
 		<h4>description</h4>
 		<h5>{user?.desc}</h5>
-		<h6>
-			<Link to="">Modifier ma description</Link>
-		</h6>
 	</div>
 
     </div>

@@ -10,11 +10,15 @@ import { Switch, IconButton, Dialog,
   Button,
   } from '@material-ui/core';
 import { Delete , Cancel } from '@material-ui/icons';
+import Pourcentage from "./Pourcentage";
+import EditIcon from '@material-ui/icons/Edit';
+import EditProfilCompany from "./EditProfilCompany";
 export default function CompanyHome({ currentUser }) {
 
   const [open, setOpen] = useState(false);
 
   const [user, setUser] = useState(null);
+  const [openProfil, setOpenProfil] = useState(false);
 
 
 
@@ -35,27 +39,6 @@ export default function CompanyHome({ currentUser }) {
   const token = currentUser?.token;
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   
-
-
-
-  const handleChange = async (event) => {
-    try {
-      const res = await axios.put("/users/" + user?._id, { status: event.target.checked }, { headers: {"x-access-token" : token} });
-      console.log(res);
-      //setStatus( event.target.checked );
-
-    const storedObject = JSON.parse(localStorage.getItem('user'));
-
-    // Update the object
-    storedObject.user = res.data;
-
-    // Save the updated object back to localStorage
-    localStorage.setItem('user', JSON.stringify(storedObject));
-    window.location.reload();
-    } catch (err) {console.log(err)}
-
-   
-  };
 
   const handleDeleteCompte = async (e) => {
     try {
@@ -85,13 +68,29 @@ export default function CompanyHome({ currentUser }) {
 			<div className="partition-header-profil">
 				<h4>Hello 
 					{" "} {user?.name}</h4>
-				<h5>Profil renseigné à 80%</h5>
+				<h5>Profil renseigné à <Pourcentage currentUser={user}/> </h5>
 				<h6>
 					<Link to="#">Modifier mon mot de passe</Link>
 			   </h6>
 			<h6>
 				<Link to="#">Modifier mon profil</Link>
 			</h6>
+      <IconButton onClick={() => setOpenProfil(true)}>
+       <EditIcon fontSize="large" color="secondary"/>
+      </IconButton>
+      <Dialog open={openProfil} onClose={() => setOpenProfil(false)}>
+        <DialogTitle>Update profil</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Mise à jour du profil  <EditProfilCompany currentUser={user} token={token} /> </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenProfil(false)}>
+            <Cancel />
+            Annulez
+          </Button>
+        </DialogActions>
+      </Dialog>
 		</div>
 
 		<div className="partition-header-status">
@@ -128,9 +127,6 @@ export default function CompanyHome({ currentUser }) {
 	<div className="dash-partition-description">
 		<h4>description</h4>
 		<h5>{user?.desc}</h5>
-		<h6>
-			<Link to="">Modifier ma description</Link>
-		</h6>
 	</div>
 
     </div>

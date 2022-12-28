@@ -1,10 +1,7 @@
 import "./register.css";
-import { useContext, useEffect, useRef, useState } from "react";
-
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { loginCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -78,7 +75,7 @@ export default function RegisterStudent() {
         try {
             await axios.get("/users/email/"+ data.email)
             //Test if Email already exists in the database
-            console.log(data);
+            //console.log(data);
             setUserExist('Email already exists in the database');
         } catch (error) {
              // Continue with the form submission if the email does not exist
@@ -137,6 +134,8 @@ export default function RegisterStudent() {
               try {
                 await axios.post("/users", user);
                 navigate("/login");
+                reset();
+                
               } catch (err) {
                 console.log(err);
               }
