@@ -13,12 +13,14 @@ import { Delete , Cancel } from '@material-ui/icons';
 import Pourcentage from "./Pourcentage";
 import EditIcon from '@material-ui/icons/Edit';
 import EditProfilCompany from "./EditProfilCompany";
+import EditPassword from "./EditPassword";
 export default function CompanyHome({ currentUser }) {
 
   const [open, setOpen] = useState(false);
 
   const [user, setUser] = useState(null);
   const [openProfil, setOpenProfil] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
 
 
 
@@ -70,10 +72,23 @@ export default function CompanyHome({ currentUser }) {
 					{" "} {user?.name}</h4>
 				<h5>Profil renseigné à <Pourcentage currentUser={user}/> </h5>
 				<h6>
-					<Link to="#">Modifier mon mot de passe</Link>
+        <Dialog open={openPassword} onClose={() => setOpenPassword(false)}>
+        <DialogTitle>Update password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>  <EditPassword currentUser={user} token={token} /> </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPassword(false)}>
+            <Cancel />
+            Annulez
+          </Button>
+        </DialogActions>
+        </Dialog>
+					<Link onClick={() => setOpenPassword(true)} to="#">Modifier mon mot de passe</Link>
 			   </h6>
 			<h6>
-				<Link to="#">Modifier mon profil</Link>
+				<Link onClick={() => setOpenProfil(true)} to="#">Modifier mon profil</Link>
 			</h6>
       <IconButton onClick={() => setOpenProfil(true)}>
        <EditIcon fontSize="large" color="secondary"/>
@@ -89,6 +104,7 @@ export default function CompanyHome({ currentUser }) {
             <Cancel />
             Annulez
           </Button>
+          
         </DialogActions>
       </Dialog>
 		</div>

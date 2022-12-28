@@ -26,12 +26,14 @@ export default function RegisterCompany() {
         .required("Mot de passe requis")
         .min(10, "Mot de passe requis minimum 10 caractères")
         .max(20, "Mot de passe requis maximum 20 caractères")
-        .matches(/([0-9])/, "Au moins un entier"),
+        .matches(/([0-9])/, "Au moins un entier")
+        .matches(/[@$!%*?&]/, "Au moins un caractere special"),
         cpassword: Yup.string()
         .required("Mot de passe de confirmation requis")
         .min(10, "Mot de passe requis minimum 10 caractères")
         .max(20, "Mot de passe requis maximum 20 caractères")
         .matches(/([0-9])/, "Au moins un entier")
+        .matches(/[@$!%*?&]/, "Au moins un caractere special")
         .oneOf([Yup.ref("password")], "Mot de passe non identiques"),
         acceptTerms: Yup.bool().oneOf(
             [true],

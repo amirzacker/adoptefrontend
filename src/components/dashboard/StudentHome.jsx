@@ -9,17 +9,20 @@ import { Switch, IconButton, Dialog,
   DialogActions,
   Button,
   } from '@material-ui/core';
-import { Delete , Cancel } from '@material-ui/icons';
+import { Delete , Cancel  } from '@material-ui/icons';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import EditIcon from '@material-ui/icons/Edit';
 import Pourcentage from "./Pourcentage";
 import EditCvMotivation from "./EditCvMotivation";
 import EditProfilStudent from "./EditProfilStudent";
+import EditPassword from "./EditPassword";
+import EditProfilCompany from "./EditProfilCompany";
 export default function StudentHome({ currentUser }) {
 
   const [open, setOpen] = useState(false);
   const [openProfil, setOpenProfil] = useState(false);
   const [openCv, setOpenCv] = useState(false);
+  const [openPassword, setOpenPassword] = useState(false);
 
   const [user, setUser] = useState(null);
 
@@ -122,10 +125,23 @@ export default function StudentHome({ currentUser }) {
 				<h5>Profil renseigné à <Pourcentage currentUser={user}/>  </h5>
         
 				<h6>
-					<Link to="#">Modifier mon mot de passe</Link>
+      <Dialog open={openPassword} onClose={() => setOpenPassword(false)}>
+        <DialogTitle>Update password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>  <EditPassword currentUser={user} token={token} /> </DialogContentText>
+          
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenPassword(false)}>
+            <Cancel />
+            Annulez
+          </Button>
+        </DialogActions>
+        </Dialog>
+					<Link onClick={() => setOpenPassword(true)} to="#">Modifier mon mot de passe</Link>
 			   </h6>
 			<h6>
-				<Link to="#">Modifier mon profil</Link>
+				<Link onClick={() => setOpenProfil(true)} to="#">Modifier mon profil</Link>
 			</h6>
       
       <IconButton onClick={() => setOpenProfil(true)}>
