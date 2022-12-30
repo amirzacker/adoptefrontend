@@ -11,6 +11,7 @@ export default function RegisterCompany() {
     const navigate = useNavigate();
     const [file, setFile] = useState(null);
     const [userExist, setUserExist] = useState("");
+    const [controleProfilePicture, setcontroleProfilePicture] = useState("");
 
 
     //test error of form 
@@ -71,25 +72,40 @@ export default function RegisterCompany() {
             isCompany: true,
             password: data.password,
           };
-          if (file) {
-              const data = new FormData();
-              const fileName = Date.now() + file.name;
-              data.append("name", fileName);
-              data.append("file", file);
-              user.profilePicture = fileName;
-              try {
-                  await axios.post("/uploads",data);
-              } catch (error) {
-                  console.log(error);
+          if (file && file.size < 2 * 1024 * 1024 && (file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg")) {
+
+                const data = new FormData();
+                const fileName = Date.now() + file.name;
+                data.append("name", fileName);
+                data.append("file", file);
+                user.profilePicture = fileName;
+  
+                console.log(data);
+                console.log(file);
+                try {
+                    await axios.post("/uploads",data);
+                } catch (error) {
+                    console.log(error);
+                }  
+           
+         
+          } else{
+            setcontroleProfilePicture("type d'image invalide, seulement: jpeg, png , jpg et inferieur à 2MB");
+        }
+        if (!file || (file && file.size < 2 * 1024 * 1024 && (file.type === "image/png" || file.type === "image/jpg" || file.type === "image/jpeg"))) {
+            try {
+                await axios.post("/users", user);
+                navigate("/login");
+                reset();
+              } catch (err) {
+                console.log(err);
               }
-          }
-          try {
-            await axios.post("/users", user);
-            navigate("/login");
-            reset();
-          } catch (err) {
-            console.log(err);
-          }
+        }
+        else{
+            setcontroleProfilePicture("type d'image invalide, seulement: jpeg, png , jpg et inferieur à 2MB");
+        }
+          
+       
     }    
 
 
@@ -108,6 +124,7 @@ export default function RegisterCompany() {
                     </label>
                 </h3>
                 <p>Ajoutez votre logo</p>
+                {controleProfilePicture && <div className="alert alert-danger">{controleProfilePicture}</div>}
 
             </div>
             <form className="form-container" onSubmit={handleSubmit(handleClick)}>

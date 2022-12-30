@@ -11,6 +11,8 @@ export default function EditProfilStudent({ currentUser , token }) {
   const [domain, setDomain] = useState([]);
   const [searchType, setSearchType] = useState([]);
 
+  const [controleProfilePicture, setcontroleProfilePicture] = useState("");
+
 
   const [success, setSuccess] = useState(false);
 
@@ -81,7 +83,7 @@ export default function EditProfilStudent({ currentUser , token }) {
       desc: desc,
       city: city,
     };
-    if (profilePicture) {
+    if ( profilePicture && profilePicture.size < 2 * 1024 * 1024 && (profilePicture.type === "image/png" || profilePicture.type === "image/jpg" || profilePicture.type === "image/jpeg")) {
       const data = new FormData();
       const fileName = Date.now() + profilePicture.name;
       data.append("name", fileName);
@@ -92,31 +94,39 @@ export default function EditProfilStudent({ currentUser , token }) {
       } catch (error) {
         console.log(error);
       }
-    }
+    } else{
+      setcontroleProfilePicture("type d'image invalide, seulement: jpeg, png , jpg et inferieur à 2MB");
+  }
+
     if (data.email) {
       user.email = data.email;
     }
+if (!profilePicture || (profilePicture && profilePicture.size < 2 * 1024 * 1024)) {
+  try {
+    const res = await axios.put("/users/" + currentUser?._id, user, {
+      headers: { "x-access-token": token },
+    });
+    console.log(res);
+    const storedObject = JSON.parse(localStorage.getItem("user"));
+    // Update the object
+    storedObject.user = res.data;
 
-    try {
-      const res = await axios.put("/users/" + currentUser?._id, user, {
-        headers: { "x-access-token": token },
-      });
-      console.log(res);
-      const storedObject = JSON.parse(localStorage.getItem("user"));
-      // Update the object
-      storedObject.user = res.data;
+    // Save the updated object back to localStorage
+    localStorage.setItem("user", JSON.stringify(storedObject));
+    setMessage("profile mise à jour avec succès")
+    setSuccess(true)
+    window.location.reload();
+    reset();
+    
+  } catch (err) {
+    console.log(err);
+  }
+}else{
+  setcontroleProfilePicture("type d'image invalide, seulement: jpeg, png , jpg et inferieur à 2MB");
+}
 
-      // Save the updated object back to localStorage
-      localStorage.setItem("user", JSON.stringify(storedObject));
-      setMessage("profile mise à jour avec succès")
-      setSuccess(true)
-      window.location.reload();
-      reset();
-      
-    } catch (err) {
-      console.log(err);
-    }
-  };
+}
+    
 
   
 
@@ -132,6 +142,7 @@ export default function EditProfilStudent({ currentUser , token }) {
           alt="upload-img-student"
         />
       </label>
+      {controleProfilePicture && <div className="alert alert-danger">{controleProfilePicture}</div>}
       <form onSubmit={handleSubmit(handleClick)}>
         <input
           type="file"

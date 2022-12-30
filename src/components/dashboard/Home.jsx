@@ -1,6 +1,4 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
 import CompanyHome from "./CompanyHome";
 import StudentHome from "./StudentHome";
 

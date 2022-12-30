@@ -1,13 +1,13 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import FlashMessage from "../alert/FlashMessage";
 
 export default function EditCvMotivation({ currentUser, token }) {
   const [cv, setCv] = useState(null);
   const [motivation, setMotivation] = useState(null);
+  const [controleMotivation, setcontroleMotivation] = useState("");
+  const [controleCv, setcontroleCv] = useState("");
 
   const [success, setSuccess] = useState(false);
 
@@ -20,7 +20,7 @@ export default function EditCvMotivation({ currentUser, token }) {
     const user = {
       id: currentUser?._id,
     };
-    if (cv) {
+    if (cv && cv.size < 2 * 1024 * 1024 && (cv.type === "image/png" || cv.type === "image/jpg" || cv.type === "image/jpeg" || cv.type === "application/pdf")) {
       const data = new FormData();
       const fileName = Date.now() + cv.name;
       data.append("name", fileName);
@@ -31,8 +31,10 @@ export default function EditCvMotivation({ currentUser, token }) {
       } catch (error) {
         console.log(error);
       }
-    }
-    if (motivation) {
+    } else {
+      setcontroleCv("Cv invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+  }
+    if (motivation && motivation.size < 2 * 1024 * 1024 && (motivation.type === "image/png" || motivation.type === "image/jpg" || motivation.type === "image/jpeg" || motivation.type === "application/pdf")) {
       const data = new FormData();
       const fileName = Date.now() + motivation.name;
       data.append("name", fileName);
@@ -43,9 +45,12 @@ export default function EditCvMotivation({ currentUser, token }) {
       } catch (error) {
         console.log(error);
       }
-    }
+    } else {
+      setcontroleMotivation("lettre de Motivation invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+  }
 
 
+  if ((!cv || (cv && cv.size < 2 * 1024 * 1024)) && (!motivation || (motivation && motivation.size < 2 * 1024 * 1024)) ) {
     try {
       const res = await axios.put("/users/" + currentUser?._id, user, {
         headers: { "x-access-token": token },
@@ -60,11 +65,17 @@ export default function EditCvMotivation({ currentUser, token }) {
       setMessage("profile mise à jour avec succès");
       setSuccess(true);
       window.location.reload();
+      console.log("ami pss");
       reset();
     } catch (err) {
       console.log(err);
     }
-  };
+  } else{
+    setcontroleMotivation("type de fichier invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+    setcontroleCv("type de fichier invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+}
+
+}
 
   return (
     <div>
@@ -103,7 +114,8 @@ export default function EditCvMotivation({ currentUser, token }) {
             onChange={(e) => setMotivation(e.target.files[0])}
           />
         </div>
-
+        {controleCv && <div className="alert alert-danger">{controleCv}</div>}
+        {controleMotivation && <div className="alert alert-danger">{controleMotivation}</div>}
         <div className="form-group submit-subscribe-button-div">
           <input
             type="submit"

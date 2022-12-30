@@ -1,10 +1,6 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import CompanyHome from "./CompanyHome";
-import StudentHome from "./StudentHome";
+import { useState } from "react";
 
-import { useNavigate } from "react-router";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";

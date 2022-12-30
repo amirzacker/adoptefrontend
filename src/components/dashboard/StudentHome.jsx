@@ -16,7 +16,6 @@ import Pourcentage from "./Pourcentage";
 import EditCvMotivation from "./EditCvMotivation";
 import EditProfilStudent from "./EditProfilStudent";
 import EditPassword from "./EditPassword";
-import EditProfilCompany from "./EditProfilCompany";
 export default function StudentHome({ currentUser }) {
 
   const [open, setOpen] = useState(false);

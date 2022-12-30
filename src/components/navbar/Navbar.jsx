@@ -1,9 +1,8 @@
 import './navbar.css'
-import React, { useCallback, useContext } from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../logo.svg'
-import { Context } from '../../context'
-import classnames from 'classnames'
+
+
 import { AuthContext } from '../../context/AuthContext'
 
 function Navbar () {

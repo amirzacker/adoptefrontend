@@ -15,6 +15,10 @@ export default function RegisterStudent() {
     const [motivation, setMotivation] = useState(null);
     const [userExist, setUserExist] = useState("");
 
+    const [controleProfilePicture, setcontroleProfilePicture] = useState("");
+    const [controleMotivation, setcontroleMotivation] = useState("");
+    const [controleCv, setcontroleCv] = useState("");
+
     const [domain, setDomain] = useState([]);
     const [searchType, setSearchType] = useState([]);
     //test error of form 
@@ -95,7 +99,7 @@ export default function RegisterStudent() {
                 isStudent: true,
                 password: data.password,
               };
-              if (profilePicture) {
+              if ( profilePicture && profilePicture.size < 2 * 1024 * 1024 && (profilePicture.type === "image/png" || profilePicture.type === "image/jpg" || profilePicture.type === "image/jpeg")) {
                   const data = new FormData();
                   const fileName = Date.now() + profilePicture.name;
                   data.append("name", fileName);
@@ -106,8 +110,10 @@ export default function RegisterStudent() {
                   } catch (error) {
                       console.log(error);
                   }
-              }
-              if (cv) {
+              }else{
+                setcontroleProfilePicture("type d'image invalide, seulement: jpeg, png , jpg et inferieur à 2MB");
+            }
+              if (cv && cv.size < 2 * 1024 * 1024 && (cv.type === "image/png" || cv.type === "image/jpg" || cv.type === "image/jpeg" || cv.type === "application/pdf")) {
                   const data = new FormData();
                   const fileName = Date.now() + cv.name;
                   data.append("name", fileName);
@@ -118,8 +124,10 @@ export default function RegisterStudent() {
                   } catch (error) {
                       console.log(error);
                   }
-              }
-              if (motivation) {
+              } else {
+                setcontroleCv("Cv invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+            }
+              if (motivation && motivation.size < 2 * 1024 * 1024 && (motivation.type === "image/png" || motivation.type === "image/jpg" || motivation.type === "image/jpeg" || motivation.type === "application/pdf")) {
                   const data = new FormData();
                   const fileName = Date.now() + motivation.name;
                   data.append("name", fileName);
@@ -130,7 +138,10 @@ export default function RegisterStudent() {
                   } catch (error) {
                       console.log(error);
                   }
-              }
+              } else {
+                setcontroleMotivation("lettre de Motivation invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+            }
+            if ((!profilePicture || (profilePicture && profilePicture.size < 2 * 1024 * 1024)) && (!cv || (cv && cv.size < 2 * 1024 * 1024)) && (!motivation || (motivation && motivation.size < 2 * 1024 * 1024)) ) {
               try {
                 await axios.post("/users", user);
                 navigate("/login");
@@ -139,6 +150,11 @@ export default function RegisterStudent() {
               } catch (err) {
                 console.log(err);
               }
+            } else{
+                setcontroleMotivation("type de fichier invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+                setcontroleProfilePicture("type de fichier invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+                setcontroleCv("type de fichier invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
+            }
         }    
     
     
@@ -159,6 +175,7 @@ export default function RegisterStudent() {
                     </label>
                 </h3>
                 <p>Ajoutez votre photo</p>
+                {controleProfilePicture && <div className="alert alert-danger">{controleProfilePicture}</div>}
             </div>
             <form className="form-container" onSubmit={handleSubmit(handleClick)} >
                 <div className="form-group form-group-css">
@@ -235,6 +252,8 @@ export default function RegisterStudent() {
                     </label>
                     <input type="file" style={{display: "none"}} id="cv" accept=".png,.jpeg,.jpg,.pdf" onChange={(e) => setCv(e.target.files[0])}/>
                     <input type="file" style={{display: "none"}}  id="motivation" accept=".png,.jpeg,.jpg,.pdf" onChange={(e) => setMotivation(e.target.files[0])}/>
+                    {controleCv && <div className="alert alert-danger">{controleCv}</div>}
+                    {controleMotivation && <div className="alert alert-danger">{controleMotivation}</div>}
                 </div>
 
 
