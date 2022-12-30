@@ -13,7 +13,7 @@ export default function EditPassword({ currentUser , token}) {
   const yupValidation = Yup.object().shape({
     password: Yup.string()
       .required("Mot de passe requis")
-      .min(10, "Mot de passe requis minimum 10 caractères")
+      .min(10, "Mot de passe requis minimum 10 caractères") 
       .max(20, "Mot de passe requis maximum 20 caractères")
       .matches(/([0-9])/, "Au moins un entier")
       .matches(/[@$!%*?&]/, "Au moins un caractere special"),

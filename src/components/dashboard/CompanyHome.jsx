@@ -15,7 +15,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import EditProfilCompany from "./EditProfilCompany";
 import EditPassword from "./EditPassword";
 export default function CompanyHome({ currentUser }) {
-
+ 
   const [open, setOpen] = useState(false);
 
   const [user, setUser] = useState(null);

@@ -44,7 +44,7 @@ export default function EditCvMotivation({ currentUser, token }) {
         await axios.post("/uploads", data);
       } catch (error) {
         console.log(error);
-      }
+      } 
     } else {
       setcontroleMotivation("lettre de Motivation invalide, seulement: jpeg, png , jpg, pdf et inferieur à 2MB");
   }

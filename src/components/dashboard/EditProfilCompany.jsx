@@ -12,7 +12,7 @@ export default function EditProfilCompany({ currentUser , token }) {
 
   const [success, setSuccess] = useState(false);
 
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState(""); 
 
   
   const [name, setName] = useState(currentUser?.name);
