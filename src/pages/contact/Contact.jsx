@@ -1,6 +1,5 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./contact.css";
-import { useNavigate } from "react-router";
 
 import * as Yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -11,7 +10,6 @@ import FlashMessage from "../../components/alert/FlashMessage";
 
 export default function Contact() {
     const form = useRef();
-    const navigate = useNavigate();
     const [success, setSuccess] = useState(false);
 
     const [message, setMessage] = useState("");
@@ -41,17 +39,6 @@ export default function Contact() {
     //test error of form 
 
 
-
-  
-    const handle = async (data) => {
-
-        
-        setMessage("test de navigate");
-        setSuccess(true)
-        reset()
-        
-    };
-
   
     const handleClick = async (data) => {
 
@@ -59,7 +46,7 @@ export default function Contact() {
           emailjs.sendForm('service_7s3s4up', 'template_ydlmofw', form.current, 'vZuhD0JUkXi3hPizJ')
           .then((result) => {
               console.log(result.text);
-              setMessage(result.data);
+              setMessage("Email de contact envoyé avec succès");
               setSuccess(true)
               reset()
           }, (error) => {
@@ -114,7 +101,7 @@ export default function Contact() {
                     <input type="submit" className="form-control form-control-lg submit-subscribe-button" value="Envoi"/>
                 </div>
                 {
-                    success ? <FlashMessage message={message} /> : ""
+                    success ? <FlashMessage message={message} color={true} /> : ""
                 }
             </form>
         </div>

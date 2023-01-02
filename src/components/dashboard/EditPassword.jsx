@@ -59,7 +59,7 @@ export default function EditPassword({ currentUser , token}) {
   return (
     <div>
                 {
-                  success ? <FlashMessage message={message} /> : ""
+                  success ? <FlashMessage message={message} color={true} /> : ""
                 }
       <form onSubmit={handleSubmit(handleClick)}>
         

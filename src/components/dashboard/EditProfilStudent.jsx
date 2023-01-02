@@ -133,7 +133,7 @@ if (!profilePicture || (profilePicture && profilePicture.size < 2 * 1024 * 1024)
   return (
     <div>
                 {
-                  success ? <FlashMessage message={message} /> : ""
+                  success ? <FlashMessage message={message} color={true} /> : ""
                 }
       <label htmlFor="profilePicture">
         <img

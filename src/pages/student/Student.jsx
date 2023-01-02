@@ -14,6 +14,7 @@ function Student () {
     const [success, setSuccess] = useState(false);
 
     const [message, setMessage] = useState("");
+    const [color, setColor] = useState(true);
    
 
     const navigate = useNavigate();
@@ -86,6 +87,7 @@ function Student () {
             }
             }
           }else{
+            setColor(false); 
             setMessage("Attention vous etes etudiant! vous ne pouver pas contacter un autre, choisisez le profil entreprise si vous vous etes trompé ");
             setSuccess(true)
           }
@@ -108,12 +110,14 @@ function Student () {
               setMessage("adopté avec succes");
               setSuccess(true)
               } else{
+                setColor(false); 
                 setMessage("Attention vous etes etudiant! vous ne pouver pas adopter un autre, choisisez le profil entreprise si vous vous etes trompé ");
                 setSuccess(true)
               }
             } catch (err) {
              ! user ? navigate("/login") : setMessage(" vous avez déjà adopté cet étudiant") && setSuccess(true) ; 
              setMessage(" vous avez déjà adopté cet étudiant"); 
+             setColor(false); 
              setSuccess(true)
             //console.log(err.reponse.status);
           
@@ -123,10 +127,6 @@ function Student () {
           
        
       };
-
-
-    
-      console.log(student);
 
  
    
@@ -183,7 +183,7 @@ function Student () {
                     </div>
                 </div>
                 {
-                  success ? <FlashMessage message={message} /> : ""
+                  success ? <FlashMessage message={message} color={color}  /> : ""
                 }
             </div>
         </div>

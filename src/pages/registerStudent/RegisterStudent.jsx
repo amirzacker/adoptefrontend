@@ -97,6 +97,7 @@ export default function RegisterStudent() {
                 desc: data.desc,
                 city: data.city,
                 isStudent: true,
+                status: true,
                 password: data.password,
               };
               if ( profilePicture && profilePicture.size < 2 * 1024 * 1024 && (profilePicture.type === "image/png" || profilePicture.type === "image/jpg" || profilePicture.type === "image/jpeg")) {

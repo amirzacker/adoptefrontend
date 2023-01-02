@@ -78,7 +78,7 @@ export default function Adoption({ currentUser }) {
         </p>
       </div>
                 {
-                  success ? <FlashMessage message={message} /> : ""
+                  success ? <FlashMessage message={message} color={true} /> : ""
                 }
       <div className="row rowcards">
             {paginatedData.length  ? (

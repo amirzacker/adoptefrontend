@@ -6,7 +6,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const FlashMessage = ({ message }) => {
+const FlashMessage = ({ message , color }) => {
   const [open, setOpen] = useState(true);
 
   const handleClose = (event, reason) => {
@@ -18,7 +18,7 @@ const FlashMessage = ({ message }) => {
   return (
     <div>
       <Snackbar open={open} autoHideDuration={10000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+        <Alert onClose={handleClose} severity={color ? "success"  : "error" }    sx={{ width: "100%" }}>
           {message}
         </Alert>
       </Snackbar>

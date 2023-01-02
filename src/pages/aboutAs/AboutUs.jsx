@@ -31,7 +31,7 @@ function AboutUs() {
 
       </div>
       <div class="right">
-         <img src="assets/img/6.jpg" alt=""/>
+         <img src="/assets/img/6.jpg" alt=""/>
       </div>
       <div class="clear"></div>
    </div>
