@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
 import FlashMessage from '../../components/alert/FlashMessage';
+import emailjs from '@emailjs/browser';
 
 function Student () {
     const { user } = useContext(AuthContext);
@@ -70,6 +71,24 @@ function Student () {
             , { headers: {"x-access-token" : user?.token} } );
             console.log(res);
             if (res.data) {
+              //if conversation existe send email
+              var templateParams = {
+                to_email: student?.email,
+                from_email: user?.user?.email,
+                to_name: student?.firstname,
+                message: "Vous avez reçu un nouveau message de la part de Adopte1etudiant, prenez connaissance du message en vous connectant sur adopte1etudiant.fr"
+          
+            }
+              emailjs.send('service_7s3s4up', 'template_drlm32o', templateParams , 'vZuhD0JUkXi3hPizJ')
+              .then((result) => {
+                  console.log(result.text);
+                  setMessage("Email de notification envoyé avec succès");
+                  setSuccess(true)
+        
+              }, (error) => {
+                  console.log(error.text);
+              });
+
               navigate("/messenger");
             } else {
 
@@ -79,6 +98,23 @@ function Student () {
                     receiverId : userId
                 }
               await axios.post("/conversations/", data, { headers: {"x-access-token" : user?.token} });
+              const templateParams = {
+                to_email: student?.email,
+                from_email: user?.user?.email,
+                to_name: student?.firstname,
+                from_name: user?.user?.name,
+                message: "Vous avez reçu un nouveau message de la part de Adopte1etudiant, prenez connaissance du message en vous connectant sur adopte1etudiant.fr"
+          
+            }
+              emailjs.send('service_7s3s4up', 'template_drlm32o', templateParams , 'vZuhD0JUkXi3hPizJ')
+              .then((result) => {
+                  console.log(result.text);
+                  setMessage("Email de notification envoyé avec succès");
+                  setSuccess(true)
+        
+              }, (error) => {
+                  console.log(error.text);
+              });
               navigate("/messenger");
             } catch (err) {
              
@@ -101,12 +137,30 @@ function Student () {
       };
 
 
+
       const handleAdoption = async () => {
       
             try {
               if (user?.user?.isCompany) {
               await axios.put("/users/" + userId +"/adopte", { id : user?.user?._id} , { headers: {"x-access-token" : user?.token} });
               //navigate("/messenger");
+              const templateParams = {
+                to_email: student?.email,
+                from_email: user?.user?.email,
+                to_name: student?.firstname,
+                from_name: user?.user?.name,
+                message: "Vous avez été adopté par une  entreprise, veuillez prendre connaissance sur adopte1etudiant.fr ",
+          
+            }
+              emailjs.send('service_7s3s4up', 'template_drlm32o', templateParams , 'vZuhD0JUkXi3hPizJ')
+              .then((result) => {
+                  console.log(result.text);
+                  setMessage("Email de notification envoyé avec succès");
+                  setSuccess(true)
+        
+              }, (error) => {
+                  console.log(error.text);
+              });
               setMessage("adopté avec succes");
               setSuccess(true)
               } else{
