@@ -27,7 +27,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "CI=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test --verbose",
     "test:e2e": "npx cypress open",
     "eject": "react-scripts eject"
