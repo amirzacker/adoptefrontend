@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import {io} from "socket.io-client";
-const ENDPOINT = "ws://localhost:3001";
+const ENDPOINT = process.env.ENDPOINT || "ws://localhost:3001";
 
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
