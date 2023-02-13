@@ -12,11 +12,11 @@ export const LoginFailure = () => ({
 });
 
 export const Adopte = (userId) => ({
-  type: "ADOPTE",
+  type: "FAVORIS",
   payload: userId,
 });
 
 export const UnAdopte = (userId) => ({
-  type: "UNADOPTE",
+  type: "UNFAVORIS",
   payload: userId,
 });

@@ -1,9 +1,8 @@
 import './footer.css'
-import React, { useCallback, useContext } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../../logo.svg'
-import { Context } from '../../context'
-import classnames from 'classnames'
+
+
 
 function Footer () {
  /*  const { context, dispatch } = useContext(Context)

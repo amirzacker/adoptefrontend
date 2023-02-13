@@ -18,20 +18,20 @@ const AuthReducer = (state, action) => {
         isFetching: false,
         error: true,
       };
-    case "ADOPTION":
+    case "FAVORIS":
       return {
         ...state,
         user: {
           ...state.user,
-          adoptions: [...state?.user?.adoptions, action.payload],
+          favoris: [...state?.user?.favoris, action.payload],
         },
       };
-    case "UNADOPTION":
+    case "UNFAVORIS":
       return {
         ...state,
         user: {
           ...state.user,
-          adoptions: state?.user?.adoptions.filter(
+          favoris: state?.user?.favoris.filter(
             (following) => following !== action.payload
           ),
         },

@@ -1,0 +1,13 @@
+.table{
+    margin: 2rem 2rem 2rem 2rem;
+}
+
+
+.nav-link {
+    margin-right: 30px;
+}
+.nav-link.active {
+    border-color: #262D2A !important;
+    background-color: #E35226 !important;
+    color: white !important;
+}

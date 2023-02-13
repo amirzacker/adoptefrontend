@@ -8,10 +8,15 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext';
 import FlashMessage from '../../components/alert/FlashMessage';
 import emailjs from '@emailjs/browser';
+import { Add, Remove } from "@material-ui/icons";
 
 function Student () {
-    const { user } = useContext(AuthContext);
-
+  const userId = useParams().id;
+  const { user, dispatch } = useContext(AuthContext);
+ 
+  const [followed, setFollowed] = useState(
+    user?.user?.favoris.includes(userId)
+  );
     const [success, setSuccess] = useState(false);
 
     const [message, setMessage] = useState("");
@@ -21,7 +26,31 @@ function Student () {
     const navigate = useNavigate();
 
     const [student, setStudent] = useState({});
-    const userId = useParams().id;
+
+
+
+    const handleClick = async () => {
+      try {
+        if (followed) {
+          await axios.put(
+            "/users/" + userId + "/unfavoris",
+            { id: user?.user?._id },
+            { headers: { "x-access-token": user?.token } }
+          );
+
+          dispatch({ type: "UNFAVORIS", payload: userId });
+        } else {
+          await axios.put(
+            "/users/" + userId + "/favoris",
+            { id: user?.user?._id },
+            { headers: { "x-access-token": user?.token } }
+          );
+          dispatch({ type: "FAVORIS", payload: userId });
+        }
+        setFollowed(!followed);
+      } catch (err) {
+      }
+    };
   
     useEffect(() => {
       const fetchUser = async () => {
@@ -136,31 +165,18 @@ function Student () {
        
       };
 
-
+      const navigateToLogin = () => {
+        navigate("/login");
+      };
 
       const handleAdoption = async () => {
-      
+        if (!user) {
+          window.location.href = '/login';
+          return; 
+        }
             try {
               if (user?.user?.isCompany) {
-              await axios.put("/users/" + userId +"/adopte", { id : user?.user?._id} , { headers: {"x-access-token" : user?.token} });
-              //navigate("/messenger");
-              const templateParams = {
-                to_email: student?.email,
-                from_email: user?.user?.email,
-                to_name: student?.firstname,
-                from_name: user?.user?.name,
-                message: "Vous avez été adopté par une  entreprise, veuillez prendre connaissance sur adopte1etudiant.fr ",
-          
-            }
-              emailjs.send('service_7s3s4up', 'template_drlm32o', templateParams , 'vZuhD0JUkXi3hPizJ')
-              .then((result) => {
-                  console.log(result.text);
-                  setMessage("Email de notification envoyé avec succès");
-                  setSuccess(true)
-        
-              }, (error) => {
-                  console.log(error.text);
-              });
+              await axios.put("/users/" + userId +"/addfavoris", { id : user?.user?._id} , { headers: {"x-access-token" : user?.token} });
               setMessage("adopté avec succes");
               setSuccess(true)
               } else{
@@ -169,7 +185,6 @@ function Student () {
                 setSuccess(true)
               }
             } catch (err) {
-             ! user ? navigate("/login") : setMessage(" vous avez déjà adopté cet étudiant") && setSuccess(true) ; 
              setMessage(" vous avez déjà adopté cet étudiant"); 
              setColor(false); 
              setSuccess(true)
@@ -215,7 +230,16 @@ function Student () {
                         <div className="attachments-student">
                             <div className="adopte-single-student-container">
                                 <Link className="adopte-single-student-button" onClick={handleAdoption} to="">Adopter</Link>
+                                 {user?.user?.isCompany ? 
+                                <button className="rightbarFollowButton" onClick={handleClick}>
+                                {followed ? "Annuler Favoris" : "Ajouter Favoris"}
+                                {followed ? <Remove /> : <Add />}
+                                 </button>
+                                 : null}
                                 <Link onClick={handleConversation}  className="adopte-single-student-button" to="">Contacter</Link>
+                            </div>
+                            <div>
+                              
                             </div>
                             <div className="attachments-student-files">
                               <a href={`${PF + student?.cv}`} target="_blank" rel="noreferrer" ><img src="/assets/svg/icon-cv.svg" alt="cv-logo" className="cv-lm-svg"/></a>

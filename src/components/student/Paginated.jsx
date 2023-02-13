@@ -2,15 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { Pagination } from '@material-ui/lab';
 
-const data = [
-  { id: 1, name: 'Item 1' },
-  { id: 2, name: 'Item 2' },
-  { id: 3, name: 'Item 3' },
-  { id: 4, name: 'Item 4' },
-  { id: 5, name: 'Item 5' },
-  // ...
-];
-
 const Paginated = () => {
 
   const [users, setUsers] = useState([]);

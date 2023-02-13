@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 import axios from "axios";
 import { useState } from 'react';
+import HomeComponent from '../../components/home/HomeComponent';
 
 function Home () {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ function Home () {
         </div>
        
     </div>
+
+    <HomeComponent/>
 
     <div className="pic-ctn">
             {
